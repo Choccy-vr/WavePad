@@ -15,4 +15,16 @@ created_at: "2025-05-22"
 
 **Total time spent: 1.5h**
 
+# May 23rd: Started PCB
 
+- Added PCB files
+
+- Add CSI Port
+
+- Add USB C with Power and Data
+
+- Added BOM of what I have so far
+
+<img title="" src="file:///C:/Users/wante/AppData/Roaming/marktext/images/2025-05-23-15-58-07-image.png" alt="" width="519">
+
+**Total time spent: 4h**

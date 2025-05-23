@@ -16,6 +16,18 @@ You can do all those things listed above and more all with a variety of hand ges
 
 - Built off of Raspberry Pi OS 
 
-- More to come  
+- Custom Apps 
+
+- More To Come
+
+### BOM
+
+| Item Name    | Purpose           | Source                                                 | Price | Total |
+| ------------ | ----------------- | ------------------------------------------------------ | ----- | ----- |
+| CM4 1GB Lite | Main Compute Unit | https://www.mouser.com/ProductDetail/358-SC0691        | $35$  |       |
+| 4.3in QLED   | Display           | https://www.waveshare.com/43h-800480-ips.htm?sku=24774 | $40$  |       |
+| NoIR Camera  | Gesture           | https://www.mouser.com/ProductDetail/358-SC0024        | $15$  |       |
+|              |                   |                                                        |       |       |
+|              |                   |                                                        |       |       |
 
 ## Work in Progress
