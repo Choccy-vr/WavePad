@@ -1,23 +1,32 @@
-# Journal
+# 
 
-### 5/22/25
+```
+---
+title: "WavePad"
+author: "Ginobeano"
+description: "Ultimate Gesture Controlled Device Companion"
+created_at: "2025-05-22"
+---
+```
 
-#### Log 1:
+### 
 
-1. Created repository and added Journal.md and README.md.
+```
+# June 8th: Got the screen to work!
 
-2. Started to brainstorm parts ideas
-   
-   1. Capactive Touchscreen
-   
-   2. IR Camera
-   
-   3. CM4
-   
-   4. Custom CM4 Carrier Board
+[actual journal content - what did you do?]
 
-        
+[insert pictures of what you're working on!]
 
+**Total time spent: 2h**
+```
 
+# May 22nd: Started Repo
+
+- Added README.md and JOURNAL.md
+
+- Submited my pitch to the Slack server
+
+**Total time spent: 1.5h**
 
 
