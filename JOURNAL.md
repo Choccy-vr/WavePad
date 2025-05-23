@@ -1,16 +1,9 @@
-# 
-
-```
 ---
 title: "WavePad"
 author: "Ginobeano"
 description: "Ultimate Gesture Controlled Device Companion"
 created_at: "2025-05-22"
 ---
-```
-
-### 
-
 
 
 # May 22nd: Started Repo
