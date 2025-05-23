@@ -11,7 +11,7 @@ created_at: "2025-05-22"
 
 - Submited my pitch to the Slack server
 
-![Screenshot 2025-05-22 221017.png](C:\Users\wante\Downloads\Screenshot%202025-05-22%20221017.png)
+![Screenshot 2025-05-22 221017.png](https://github.com/Choccy-vr/WavePad/blob/main/Screenshot%202025-05-22%20221017.png)
 
 **Total time spent: 1.5h**
 
