@@ -11,7 +11,7 @@ created_at: "2025-05-22"
 
 - Submited my pitch to the Slack server
 
-![Screenshot 2025-05-22 221017.png](https://github.com/Choccy-vr/WavePad/blob/main/Screenshot%202025-05-22%20221017.png)
+
 
 **Total time spent: 1.5h**
 
@@ -25,6 +25,6 @@ created_at: "2025-05-22"
 
 - Added BOM of what I have so far
 
-<img title="" src="file:///C:/Users/wante/AppData/Roaming/marktext/images/2025-05-23-15-58-07-image.png" alt="" width="519">
+![Screenshot 2025-05-22 221017.png](https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Screenshot%202025-05-23%20160045.png)
 
 **Total time spent: 4h**
