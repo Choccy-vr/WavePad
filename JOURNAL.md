@@ -11,15 +11,7 @@ created_at: "2025-05-22"
 
 ### 
 
-```
-# June 8th: Got the screen to work!
 
-[actual journal content - what did you do?]
-
-[insert pictures of what you're working on!]
-
-**Total time spent: 2h**
-```
 
 # May 22nd: Started Repo
 
