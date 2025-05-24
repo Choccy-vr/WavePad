@@ -69,31 +69,7 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [
-        "clearance|139230000|113220000|fe81328c-4315-4259-ae11-c74e8b8c21b9|d142518c-f489-43a5-b522-0de3d0d78449",
-        "clearance|140080000|112370000|fe81328c-4315-4259-ae11-c74e8b8c21b9|bc7eb840-d2d4-483d-aa28-0e4d374ad259",
-        "clearance|140500000|114910000|d142518c-f489-43a5-b522-0de3d0d78449|0a766f33-fc2c-48af-8d7e-c4d8196af475",
-        "clearance|141770000|113640000|bc7eb840-d2d4-483d-aa28-0e4d374ad259|0a766f33-fc2c-48af-8d7e-c4d8196af475",
-        "clearance|146205000|147060000|bbcfc3bd-7f63-4797-ae24-05f4ee20b4bf|290360c5-e72c-49c7-b357-0ee46eebcdd5",
-        "clearance|158801057|146485041|4ddb274e-f0b2-4334-b1a2-8b938756557d|b6da9771-4617-45db-9811-02e044609eaf",
-        "clearance|159050000|145950000|4ddb274e-f0b2-4334-b1a2-8b938756557d|b63704fb-a4f1-48d6-9bb9-2aa2c7420560",
-        "clearance|159543717|145683126|c3ebf1b2-c4a1-4139-99e5-5666abd8166d|b63704fb-a4f1-48d6-9bb9-2aa2c7420560",
-        "clearance|159795000|147060000|989a6b41-a40a-4945-8989-c2df752be7cb|b6da9771-4617-45db-9811-02e044609eaf",
-        "clearance|159834863|145525749|c3ebf1b2-c4a1-4139-99e5-5666abd8166d|b6da9771-4617-45db-9811-02e044609eaf",
-        "clearance|162974866|146603309|ac53342c-f8e9-4b5e-83ff-3f1b69c1d4d0|b6da9771-4617-45db-9811-02e044609eaf",
-        "courtyards_overlap|124749999|104470001|00000000-0000-0000-0000-00005d2e9306|00000000-0000-0000-0000-00005e42b6ed",
-        "courtyards_overlap|174150001|128080001|00000000-0000-0000-0000-00005da49749|00000000-0000-0000-0000-00005ea8f1d6",
-        "courtyards_overlap|209179865|74250001|00000000-0000-0000-0000-00005d2f94b1|00000000-0000-0000-0000-00005e5287ca",
-        "courtyards_overlap|225650001|129750001|00000000-0000-0000-0000-00005ea7586d|00000000-0000-0000-0000-00005eacc32d",
-        "courtyards_overlap|228329999|100950001|00000000-0000-0000-0000-00005eac7a3f|00000000-0000-0000-0000-00005eac7a8e",
-        "courtyards_overlap|228329999|102800001|00000000-0000-0000-0000-00005eac7a8e|00000000-0000-0000-0000-00005eac7abe",
-        "courtyards_overlap|231049999|129750001|00000000-0000-0000-0000-00005ea7586d|00000000-0000-0000-0000-00005eacc33e",
-        "courtyards_overlap|231879999|100950001|00000000-0000-0000-0000-00005eac7a50|00000000-0000-0000-0000-00005eac7a7d",
-        "courtyards_overlap|231879999|102800001|00000000-0000-0000-0000-00005eac7a7d|00000000-0000-0000-0000-00005eac7a9f",
-        "courtyards_overlap|90190001|134200001|00000000-0000-0000-0000-00005d2dff5b|00000000-0000-0000-0000-00005d2e03d6",
-        "malformed_courtyard|81352488|116552434|00000000-0000-0000-0000-00005d2dff5b|00000000-0000-0000-0000-000000000000",
-        "track_dangling|152940000|75160000|a16d2bd3-17a5-41da-8175-115f6694395d|00000000-0000-0000-0000-000000000000"
-      ],
+      "drc_exclusions": [],
       "meta": {
         "version": 2
       },
@@ -104,16 +80,19 @@
         "copper_edge_clearance": "error",
         "copper_sliver": "warning",
         "courtyards_overlap": "error",
+        "creepage": "error",
         "diff_pair_gap_out_of_range": "error",
         "diff_pair_uncoupled_length_too_long": "error",
         "drill_out_of_range": "error",
         "duplicate_footprints": "warning",
         "extra_footprint": "warning",
         "footprint": "error",
+        "footprint_filters_mismatch": "ignore",
         "footprint_symbol_mismatch": "warning",
         "footprint_type_mismatch": "error",
         "hole_clearance": "error",
         "hole_near_hole": "error",
+        "hole_to_hole": "error",
         "holes_co_located": "warning",
         "invalid_outline": "error",
         "isolated_copper": "warning",
@@ -124,9 +103,11 @@
         "lib_footprint_mismatch": "warning",
         "malformed_courtyard": "error",
         "microvia_drill_out_of_range": "error",
+        "mirrored_text_on_front_layer": "warning",
         "missing_courtyard": "ignore",
         "missing_footprint": "warning",
         "net_conflict": "warning",
+        "nonmirrored_text_on_back_layer": "warning",
         "npth_inside_courtyard": "ignore",
         "padstack": "error",
         "pth_inside_courtyard": "ignore",
@@ -138,10 +119,13 @@
         "solder_mask_bridge": "error",
         "starved_thermal": "error",
         "text_height": "warning",
+        "text_on_edge_cuts": "error",
         "text_thickness": "warning",
         "through_hole_pad_without_hole": "error",
         "too_many_vias": "error",
+        "track_angle": "error",
         "track_dangling": "warning",
+        "track_segment_length": "error",
         "track_width": "error",
         "tracks_crossing": "error",
         "unconnected_items": "error",
@@ -157,6 +141,7 @@
         "min_clearance": 0.0,
         "min_connection": 0.0,
         "min_copper_edge_clearance": 0.01,
+        "min_groove_width": 0.0,
         "min_hole_clearance": 0.0,
         "min_hole_to_hole": 0.24,
         "min_microvia_diameter": 0.2,
@@ -175,10 +160,11 @@
       },
       "teardrop_options": [
         {
-          "td_onpadsmd": true,
+          "td_onpthpad": true,
           "td_onroundshapesonly": false,
+          "td_onsmdpad": true,
           "td_ontrackend": false,
-          "td_onviapad": true
+          "td_onvia": true
         }
       ],
       "teardrop_parameters": [
@@ -223,8 +209,10 @@
         0.147,
         0.2,
         0.23,
+        0.4,
         0.5,
         1.0,
+        1.2,
         2.0,
         3.0
       ],
@@ -274,7 +262,13 @@
       "mfg": "",
       "mpn": ""
     },
-    "layer_pairs": [],
+    "layer_pairs": [
+      {
+        "bottomLayer": 6,
+        "enabled": true,
+        "topLayer": 4
+      }
+    ],
     "layer_presets": [],
     "viewports": []
   },
@@ -1073,11 +1067,7 @@
     ],
     [
       "00000000-0000-0000-0000-00005e072e02",
-      "USB2-HUB"
-    ],
-    [
-      "00000000-0000-0000-0000-00005e328d89",
-      "RTC , Wakeup,"
+      "USB"
     ],
     [
       "00000000-0000-0000-0000-00005cff70b1",

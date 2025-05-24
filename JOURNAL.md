@@ -28,3 +28,15 @@ created_at: "2025-05-22"
 <img title="" src="file:///C:/Users/wante/AppData/Roaming/marktext/images/2025-05-23-15-58-07-image.png" alt="" width="519">
 
 **Total time spent: 4h**
+
+# May 24th: Worked on PCB
+
+- Finished Schematic
+
+- Finished Routing
+
+- Encountered a problem with connecting GND to dense areas
+
+![](C:\Users\wante\AppData\Roaming\marktext\images\2025-05-24-19-48-04-image.png)
+
+**Total time spent: 3h**
