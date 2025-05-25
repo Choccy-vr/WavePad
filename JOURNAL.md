@@ -1,7 +1,7 @@
 ---
 title: "WavePad"
 author: "Ginobeano"
-description: "Ultimate Gesture Controlled Device Companion"
+description: "Gesture Controlled Desktop Companion"
 created_at: "2025-05-22"
 ---
 
