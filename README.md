@@ -16,7 +16,9 @@ You can do all those things listed above and more all with a variety of hand ges
 
 - Built off of Raspberry Pi OS 
 
-- Custom Apps 
+- Custom Apps
+
+- Touch Screen
 
 - More To Come
 
