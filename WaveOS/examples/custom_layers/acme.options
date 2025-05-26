@@ -1,0 +1,8 @@
+# This dir will get passed to the rootfs install, see acme/acme-sdk-v1.yaml
+acme_keydir=/path/to/dir
+# Empty lines are supported
+
+device_hostname=acme-devhost
+device_user1=acmedev
+device_user1pass=roadrunner
+acme_dev_server=build.acme.org

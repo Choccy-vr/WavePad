@@ -1,0 +1,59 @@
+image <IMAGE_NAME>.<IMAGE_SUFFIX>.sparse {
+   android-sparse {
+      image = <IMAGE_NAME>.<IMAGE_SUFFIX>
+   }
+}
+
+image boot.vfat.sparse {
+   android-sparse {
+      image = boot.vfat
+   }
+}
+
+image root.ext4.sparse {
+   android-sparse {
+      image = root.ext4
+   }
+}
+
+image <IMAGE_NAME>.<IMAGE_SUFFIX> {
+   hdimage {
+      align = 8M
+      partition-table-type = "mbr"
+   }
+
+   partition boot {
+      in-partition-table = true
+      partition-type = 0xC
+      image = boot.vfat
+      bootable = true
+   }
+
+   partition root {
+      in-partition-table = true
+      partition-type = 0x83
+      image = root.ext4
+   }
+}
+
+image boot.vfat {
+   vfat {
+      label = "BOOT"
+      extraargs = "-s 4 -S <SECTOR_SIZE> -i <BOOT_UUID>"
+   }
+   size = <FW_SIZE>
+   mountpoint = "/boot/firmware"
+   exec-pre = "<SETUP> BOOT <BOOT_UUID> <ROOT_UUID>"
+}
+
+image root.ext4 {
+   ext4 {
+      label = "ROOT"
+      use-mke2fs = true
+      mke2fs-conf = <MKE2FSCONF>
+      extraargs = "-U <ROOT_UUID>"
+   }
+   size = <ROOT_SIZE>
+   mountpoint = "/"
+   exec-pre = "<SETUP> ROOT <BOOT_UUID> <ROOT_UUID>"
+}

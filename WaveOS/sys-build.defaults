@@ -1,0 +1,46 @@
+# rpi-image-gen system build configuration defaults
+
+# If you require the use of an APT HTTP proxy, set it using this. The proxy
+# setting will not be included in the image, making it safe to use an
+# `apt-cacher` or similar package for development.
+apt_proxy_http=
+
+# If y, APT operations in the chroot will purge by default. Refer to apt-get(8)
+apt_get_purge=y
+
+# Root of the directory hierarchy containing rpi-image-gen build artefacts.
+# Note, depending on the system being built, this directory can amount to a
+# substantial amount of consumed disk space.
+workdir="${IGTOP}/work/${IGconf_image_name}"
+
+# If a particular collection of keys are required for bdebstrap to download
+# packages from the mirror(s) provided, set the directory containing them here.
+# This will be passed to bdebstrap via aptopt Dir::Etc::TrustedParts. If not
+# specified, rpi-image-gen sets this directory and assembles the keys it
+# requires into it.
+# This particular setting of Dir::Etc::TrustedParts will not be included in the
+# image. If using this option, please make sure to install your key(s) into the
+# chroot explicitly if a key contained in this directory points to a location
+# that is not otherwise populated during chroot creation (for example by
+# installing a keyring package).
+apt_keydir=
+
+# Location of all build product artefacts.
+outputdir="${IGconf_sys_workdir}/artefacts"
+
+# Location where final images and assets will be installed to.
+deploydir="${IGconf_sys_workdir}/deploy"
+
+# The type of target created by bdebstrap to hold the device filesystem.
+# This argument is passed straight to bdebstrap via --target and can be the
+# path to a directory, the path to a tarball filename, etc. See bdebstrap(1)
+# for further details.
+# If not a directory, rpi-image-gen will terminate immediately after bdebstrap
+# execution completes for the sole reason that subsequent stages (eg post-build
+# hooks and genimage) do not support operating on anything except  a directory.
+# Custom bdebstrap hooks are unaffected by different target types because they
+# execute in bdebstrap context and always operate on the chroot regardless if
+# the target is a file or a directory.
+# Note that it's possible to specify a directory here and use a post-build hook
+# to create a file (eg tarball) as an additional artefact.
+target="${IGconf_sys_workdir}/rootfs"

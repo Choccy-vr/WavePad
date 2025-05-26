@@ -1,0 +1,60 @@
+= Image Layouts
+
+This directory contains the 'in-tree' image layouts supported by rpi-image-gen.
+
+[cols="1,1"]
+|===
+|Name |Description
+
+|mbr/simple_dual
+|Raspberry Pi OS style
+
+|gpt/ab_userdata *(Beta)*
+|AB capable with a data partition retained across rotations
+
+|===
+
+For detailed information about a particular layout, including configuration options and defaults, please refer to documentation within the appropriate layout sub-directory.
+
+== Notes
+
+Unless otherwise stated, the following apply to all layouts:
+
+* `Size`
+
+Sizes are specified in units supported by ```genimage``` (https://github.com/pengutronix/genimage).
+
+* `Default Size`
+
+Each partition image encapsulated in the final disk image has a default size. Typically this is 100% of the filesystem that is created and filled, which means there is no headroom if the filesystem is intended to be writable. The rpi-image-gen configuration attributes (i.e. the config or options file) must declare appropriate sizes for all partitions if the default sizes are not suitable. 100% is likely a suitable size if the partition contains a read-only filesystem such as squashfs.
+
+* `mke2fs.conf`
+
+rpi-image-gen layouts instruct ```genimage``` to use the Host mke2fs to create Extended File Systems (e.g. ext4). In order to ensure these filesystems are created consistently, ```genimage``` will use a particular ```mke2fs.conf``` when creating the image. Additional options may also be passed to mke2fs depending on the layout.
+
+* `vfat`
+
+When creating FAT filesystems, different options may be passed to ```mkdosfs(8)``` by genimage depending on the layout.
+
+* `Configuration Options`
+
+Variables that allow customisation of a layout should be declared in either the Config or Options files in as described in the rpi-image-gen documentation. For example:
+
+Variable ```image_boot_part_size``` can be set by:
+
+Config
+
+----
+[image]
+boot_part_size=200%
+----
+
+or:
+
+Options
+
+----
+image_boot_part_size=200%
+----
+
+Each image layout sub-directory contains a file which specifies the default values of its supported configuration variables.

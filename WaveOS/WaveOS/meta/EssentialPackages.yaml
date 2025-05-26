@@ -1,0 +1,10 @@
+name: Essential-Packages
+mmdebstrap:
+  packages:
+    - unzip
+    - cmake
+    - libraspberrypi-dev
+    - build-essential
+    - wget
+    - nano
+    

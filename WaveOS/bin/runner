@@ -1,0 +1,37 @@
+#!/bin/bash
+
+set -u
+
+op="$1"
+shift 1
+
+# Execute scripts from within these dirs in this order
+dirs=()
+dirs+=("${IGIMAGE}/bdebstrap")
+dirs+=("${IGDEVICE}/bdebstrap")
+[[ -n ${IGconf_ext_dir+x} ]] && dirs+=("${IGconf_ext_dir}/bdebstrap")
+dirs+=("${IGTOP}/scripts/bdebstrap")
+
+case "$op" in
+   setup|extract|essential|customize|cleanup)
+      for dir in "${dirs[@]}" ; do
+         [[ -d "$dir" ]] || continue
+         scripts=("${dir}/${op}"*)
+         for script in "${scripts[@]}" ; do
+            if [ -x "$script" ] ; then
+               s=$(basename "$script")
+               if [[ $s =~ ^[a-zA-Z0-9-]+$ ]] ; then
+                  env -C "$dir" bash "$s" "$@"
+                  err=$?
+                  if [ $err -ne 0 ] ; then
+                     >&2 echo "runner: $script error ($err)"
+                     exit $err
+                  fi
+               fi
+            fi
+         done
+      done
+      ;;
+   *)
+      ;;
+esac

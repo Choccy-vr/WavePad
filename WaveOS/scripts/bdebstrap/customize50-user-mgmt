@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -u
+
+# User role and management operations
+
+if grep-dctrl -q -XFStatus "install ok installed" -a \
+   -XFPackage docker-ce $1/var/lib/dpkg/status ; then
+   if igconf isy meta_docker_trust_user1 ; then
+      chroot $1 sh -c "adduser $IGconf_device_user1 docker"
+   fi
+fi
+
+if grep-dctrl -q -XFStatus "install ok installed" -a \
+   -XFPackage openssh-server $1/var/lib/dpkg/status ; then
+   if [ -d $1/home/${IGconf_device_user1}/.ssh ] ; then
+      chroot $1 bash -- <<- EOCHROOT
+      chown -R ${IGconf_device_user1}:${IGconf_device_user1} /home/${IGconf_device_user1}/.ssh
+      chmod 0700 /home/${IGconf_device_user1}/.ssh
+      if [ -f /home/${IGconf_device_user1}/.ssh/authorized_keys ] ; then
+         chmod 0600 /home/${IGconf_device_user1}/.ssh/authorized_keys
+      fi
+EOCHROOT
+   fi
+fi

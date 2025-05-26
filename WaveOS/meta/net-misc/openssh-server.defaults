@@ -1,0 +1,19 @@
+# Controls /home/$IGconf_device_user1/.ssh/authorized_keys
+# By default, authorized_keys will be created empty.
+# If set to a valid file path, the contents of the file is used to populate
+# authorized_keys.
+# If set to a non-empty string that's not a valid file path, the contents of
+# the variable is used to populate authorized_keys.
+# Since it's possible to pass variables via the environment, one way to specify
+# this in build scripts could be as follows:
+#  IGconf_meta_ssh_pubkey_user1=$(< /path/to/.ssh/id_rsa.pub) build.sh <args>
+ssh_pubkey_user1=
+
+# Applies sshd settings via /etc/ssh/sshd_config.d/
+# If n, default sshd settings are in place which means password authentication
+# is enabled.
+# If y, only SSH public key authentication is enabled. Challenge Response,
+# Password and Kerberos authentication are disabled. If alternative sshd
+# settings are required, consider using a device or image rootfs-overlay, or
+# custom bdebstrap hook.
+sshd_pubkey_only=n

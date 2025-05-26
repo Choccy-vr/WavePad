@@ -1,0 +1,29 @@
+---
+name: openssh server
+mmdebstrap:
+  packages:
+    - openssh-server
+  customize-hooks:
+    - mkdir -p $1/home/${IGconf_device_user1}/.ssh
+    - |-
+      if [ -z ${IGconf_meta_ssh_pubkey_user1+x} ]; then
+         touch $1/home/${IGconf_device_user1}/.ssh/authorized_keys
+      elif [ -f "$IGconf_meta_ssh_pubkey_user1" ] ; then
+         cat $IGconf_meta_ssh_pubkey_user1 > $1/home/${IGconf_device_user1}/.ssh/authorized_keys
+      else
+         echo "$IGconf_meta_ssh_pubkey_user1" > $1/home/${IGconf_device_user1}/.ssh/authorized_keys
+      fi
+    - |-
+      if igconf is_y meta_sshd_pubkey_only ; then
+         mkdir -p $1/etc/ssh/sshd_config.d
+         cat <<- 'EOCHROOT' > $1/etc/ssh/sshd_config.d/01pubkey-only.conf
+      PermitRootLogin no
+      ChallengeResponseAuthentication no
+      PasswordAuthentication no
+      GSSAPIAuthentication no
+      UsePAM yes
+      PubkeyAuthentication yes
+      AuthenticationMethods publickey
+      EOCHROOT
+      fi
+    - $BDEBSTRAP_HOOKS/enable-units "$1" ssh

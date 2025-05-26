@@ -1,0 +1,15 @@
+---
+name: debian-bookworm-rpi
+mmdebstrap:
+  mirrors:
+    - deb http://archive.raspberrypi.com/debian bookworm main
+  packages:
+    - raspberrypi-archive-keyring
+  customize-hooks:
+    - test -f $1/usr/share/keyrings/raspberrypi-archive-keyring.gpg || false
+    - mkdir -p $1/etc/apt/sources.list.d
+    - |-
+      cat <<- EOF > $1/etc/apt/sources.list.d/raspberrypi.list
+      deb [signed-by=/usr/share/keyrings/raspberrypi-archive-keyring.gpg] http://archive.raspberrypi.com/debian bookworm main
+      EOF
+    - sed -i '/archive\.raspberrypi\.com/d' $1/etc/apt/sources.list

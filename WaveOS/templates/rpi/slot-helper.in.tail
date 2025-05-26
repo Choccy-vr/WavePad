@@ -1,0 +1,182 @@
+# End auto-generated
+
+die (){
+   >&2 echo "$*"
+   exit 1
+}
+
+
+: "${BOOTA:?}"
+: "${BOOTB:?}"
+: "${SYSTEMA:?}"
+: "${SYSTEMB:?}"
+
+: "${BOOTA_ENCRYPTED:?}"
+: "${BOOTB_ENCRYPTED:?}"
+: "${SYSTEMA_ENCRYPTED:?}"
+: "${SYSTEMB_ENCRYPTED:?}"
+
+
+prefix=disk/by-slot
+
+
+# mandatory
+command -v od > /dev/null 2>&1 || die "!od"
+command -v sed > /dev/null 2>&1 || die "!sed"
+
+
+usage()
+{
+cat <<-EOF >&2
+Usage
+  $(basename "$0") [-f|-u|-t][-m] [arg]
+Slot delegation helper for AB systems
+
+Write out slot information for the given argument based on option specifiers.
+The arg can be a kernel device (eg mmcblk0p1) or a decimal partition number.
+Options dictate what is written to stdout. If no arg is provided, the current
+boot partition is used.
+
+  [-f] fully qualified device node path
+  [-u] udev - output suitable for udev rules (SLOT=<val>)
+  [-t] tryboot fragment - output suitable for autoboot.txt
+  [-m] matching partition in same slot
+EOF
+}
+
+
+fqname=0
+match=0
+tryboot=0
+udev=0
+while getopts "fmtu" opt; do
+   case $opt in
+      f)
+         fqname=1
+         shift $((OPTIND - 1))
+         ;;
+      m)
+         match=1
+         shift $((OPTIND - 1))
+         ;;
+      t)
+         tryboot=1
+         shift $((OPTIND - 1))
+         ;;
+      u)
+         udev=1
+         shift $((OPTIND - 1))
+         ;;
+      ?|*)
+         usage ; exit 1
+         ;;
+   esac
+done
+arg="$1"
+
+nopt=$((fqname + udev + tryboot))
+if [ "$nopt" -gt 1 ] ; then die "only one of -f,-u,-t supported" ; fi
+
+
+# https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#BOOT_ORDER
+bootmode=$(od -An -tx1 /proc/device-tree/chosen/bootloader/boot-mode | sed 's/[^0-9a-fA-F]//g')
+bootpart=$(od -An -tx1 /proc/device-tree/chosen/bootloader/partition | sed 's/[^0-9a-fA-F]//g')
+bootmode=$(printf "%d" "$bootmode")
+bootpart=$(printf "%d" "$bootpart")
+
+
+if [ "$nopt" -eq 0 ] && [ -z "$arg" ] ; then
+   echo "${bootmode}:${bootpart}"
+   exit 0
+elif [ -z "$arg" ] ; then
+   arg="$bootpart"
+else
+   :
+fi
+
+
+case $bootmode in
+   1) bootdev=mmcblk0 ;;
+   6) bootdev=nvme0n1 ;;
+   *) die "unsupported bootmode $bootmode" ;;
+esac
+
+
+test -e /sys/class/block/$bootdev || die "bad base blockdev"
+
+
+case $bootdev in
+   mmc*|nvme*)
+      for d in BOOTA BOOTB SYSTEMA SYSTEMB ; do
+         eval crypt=\$"${d}_ENCRYPTED"
+         if [ "$crypt" = "y" ] ; then
+            eval "bdev=\$${d}"
+            test -e "/dev/mapper/${bdev}" || die "bad mapper blockdev $bdev"
+         else
+            _v="k${d}"
+            eval "$_v=\${bootdev}p\${$d}"
+            eval "bdev=\$$_v"
+            # shellcheck disable=SC2154
+            test -e "/sys/class/block/${bdev}" || die "bad blockdev $bdev"
+         fi
+      done
+      ;;
+   *);;
+esac
+
+
+case $bootpart in
+   "$BOOTA") bootpart_other="$BOOTB" ;;
+   "$BOOTB") bootpart_other="$BOOTA" ;;
+   *) die "bootpart $bootpart not found in pmap" ;;
+esac
+
+
+unset slot
+# shellcheck disable=SC2154
+case $arg in
+   "$BOOTA"|"$kBOOTA")
+      if [ "$bootpart" -eq "$BOOTA" ] ; then slot="active/boot" ; fi
+      if [ "$bootpart" -eq "$BOOTB" ] ; then slot="other/boot" ; fi
+      ;;
+   "$BOOTB"|"$kBOOTB")
+      if [ "$bootpart" -eq "$BOOTB" ] ; then slot="active/boot" ; fi
+      if [ "$bootpart" -eq "$BOOTA" ] ; then slot="other/boot" ; fi
+      ;;
+   "$SYSTEMA"|"$kSYSTEMA")
+      if [ "$bootpart" -eq "$BOOTA" ] ; then slot="active/system" ; fi
+      if [ "$bootpart" -eq "$BOOTB" ] ; then slot="other/system" ; fi
+      ;;
+   "$SYSTEMB"|"$kSYSTEMB")
+      if [ "$bootpart" -eq "$BOOTB" ] ; then slot="active/system" ; fi
+      if [ "$bootpart" -eq "$BOOTA" ] ; then slot="other/system" ; fi
+      ;;
+esac
+
+
+if [ -z ${slot+x} ] ; then
+   die "no slot found"
+fi
+
+
+if [ $match -eq 1 ] ; then slot=$(echo "$slot" | sed -e 's|boot|system|;t' -e 's|system|boot|') ; fi
+
+if [ $fqname -eq 1 ] ; then
+   slot="/dev/${prefix}/${slot}"
+elif [ $udev -eq 1 ] ; then
+   slot="SLOT=${prefix}/${slot}"
+elif [ $tryboot -eq 1 ] ; then
+   cat << EOF
+[all]
+tryboot_a_b=1
+boot_partition=${bootpart}
+[tryboot]
+boot_partition=${bootpart_other}
+EOF
+   exit 0
+else
+   :
+fi
+
+echo "$slot"
+exit 0

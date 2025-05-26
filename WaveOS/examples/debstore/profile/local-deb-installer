@@ -1,0 +1,11 @@
+debian/bookworm/arm64/base-apt-multi
+rpi/debian/bookworm/apt
+rpi/misc-utils
+rpi/base/essential
+rpi/boot-firmware
+rpi/arm64/linux-image-2712
+rpi/user-credentials
+rpi/misc-skel
+sys-apps/systemd-net-min
+sys-apps/fake-hwclock
+debstore-installer

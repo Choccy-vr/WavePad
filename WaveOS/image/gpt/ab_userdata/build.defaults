@@ -1,0 +1,6 @@
+# The image layout requires this profile
+profile=required-base
+
+# Images built for devices with eMMC storage can write protect the
+# partition table by setting this to y.
+ptable_protect=y

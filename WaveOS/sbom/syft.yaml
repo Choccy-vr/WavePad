@@ -1,0 +1,21 @@
+file:
+  metadata:
+    selection: all
+    digests:
+      - sha256
+
+output:
+  - spdx-json
+
+format:
+    pretty: true
+
+source:
+  file:
+    digests:
+      - sha256
+
+package:
+  cataloger:
+    scope:
+      - squashed

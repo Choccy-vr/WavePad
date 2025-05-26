@@ -1,0 +1,7 @@
+# demo-only: encapsulate firmware in squashfs image
+image firmware.squashfs {
+   squashfs {
+      compression = zstd
+   }
+   mountpoint = "/boot/firmware"
+}

@@ -1,0 +1,27 @@
+---
+name: acme-sdk-v1
+mmdebstrap:
+#  mirrors:
+    # Could add repos and components here for bespoke packages only from this repo, eg
+    # deb http://example.org/debian bookworm acme-dev
+#  setup-hooks:
+    # Install keys for accessing the above repo, eg
+    # mkdir -p $1/etc/apt/trusted.gpg.d/
+    # cp $IGconf_acme_keydir/acme.gpg.key | gpg --dearmor > $1/etc/apt/trusted.gpg.d/acme.gpg
+  customize-hooks:
+    # Could perform ops here after the chroot is set up and all packages got installed, eg
+  - cp $IGconf_ext_nsdir/setup-functions $1/home/$IGconf_device_user1
+  - |-
+    chroot $1 bash -- <<- EOCHROOT
+    source /home/$IGconf_device_user1/setup-functions
+    install_secrets $IGconf_device_user1 $IGconf_acme_dev_server
+    touch /home/$IGconf_device_user1/acme.INSTALLED
+    EOCHROOT
+  cleanup-hooks:
+    - shred --verbose -u --zero $1/home/$IGconf_device_user1/setup-functions
+  packages:
+    - bash
+    # xxx
+    # yyy
+    # zzz
+    # ...

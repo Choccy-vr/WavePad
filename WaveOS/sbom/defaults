@@ -1,0 +1,11 @@
+# rpi-image-gen sbom defaults
+
+# Configuration file containg the settings syft will use to scan
+# and output the SBOM. The following options are explicitly specified
+# when syft is invoked:
+# source:
+#   name
+#   version
+#   base-path
+# Ref: https://github.com/anchore/syft/wiki/Configuration
+syft_config=syft.yaml

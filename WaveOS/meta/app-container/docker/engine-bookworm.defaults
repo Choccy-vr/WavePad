@@ -1,0 +1,6 @@
+# Set this to y to make device_user1 a member of the docker group
+# and therefore able to run containers (and applications) without
+# requiring root privileges.
+# Enabling this has security implications.
+# https://docs.docker.com/engine/security/#docker-daemon-attack-surface
+docker_trust_user1=n

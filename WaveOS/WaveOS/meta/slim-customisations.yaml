@@ -1,0 +1,11 @@
+---
+name: example-slim
+mmdebstrap:
+  customize-hooks:
+    # Replace this line with a conditional version:
+    - chroot $1 sh -c "id -u $IGconf_device_user1 &>/dev/null || useradd -m -s /bin/bash -u 4000 $IGconf_device_user1"
+    - |-
+      if [ -n "$IGconf_device_user1pass" ] ; then
+         chroot $1 sh -c "echo ${IGconf_device_user1}:${IGconf_device_user1pass} | chpasswd"
+      fi
+    - chroot $1 usermod --pass='*' root

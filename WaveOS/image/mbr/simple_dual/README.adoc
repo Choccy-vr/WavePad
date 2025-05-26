@@ -1,0 +1,52 @@
+= mbr/simple_dual
+
+== Description
+
+Similar to Raspberry Pi OS, this layout has an MBR partition table containing two partitions.
+
+== Partitions
+
+[cols="1,1,1,1,1"]
+|===
+|Filesystem |Label |Attributes |Default Size |Description
+
+|vfat
+|BOOT
+|[1]
+|100%
+|Boot firmware
+
+|ext4 or btrfs
+|ROOT
+|[1]
+|100%
+|Root filesystem
+
+|===
+
+[1] Refer to ```genimage.cfg.in.${image_rootfs_type}```
+
+== Configuration Options
+
+[cols="1,1,1,1"]
+|===
+|Variable |Description |Supported |Default
+
+|image_boot_part_size
+|Boot partition image size
+|Units (genimage)
+|100%
+
+|image_root_part_size
+|Root partition image size
+|Units (genimage)
+|100%
+
+|image_rootfs_type
+|Root filesystem type
+|ext4, btrfs
+|ext4
+
+|===
+
+

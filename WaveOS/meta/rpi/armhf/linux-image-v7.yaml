@@ -1,0 +1,8 @@
+---
+name: rpi-linux-v7
+mmdebstrap:
+  packages:
+    - initramfs-tools
+    - linux-image-rpi-v7
+  customize-hooks:
+    - sed -i 's/^update_initramfs=.*/update_initramfs=yes/' $1/etc/initramfs-tools/update-initramfs.conf

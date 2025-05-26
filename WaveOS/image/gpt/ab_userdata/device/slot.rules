@@ -1,0 +1,3 @@
+SUBSYSTEM=="block", KERNEL=="mmcblk*p*[0-9]", IMPORT{program}="/usr/bin/rpi-slot -u %k", SYMLINK+="$env{SLOT}"
+SUBSYSTEM=="block", KERNEL=="nvme*n*p*[0-9]", IMPORT{program}="/usr/bin/rpi-slot -u %k", SYMLINK+="$env{SLOT}"
+SUBSYSTEM=="block", KERNEL=="dm-*", ENV{DM_NAME}=="*", IMPORT{program}="/usr/bin/rpi-slot -u %E{DM_NAME}", SYMLINK+="$env{SLOT}"

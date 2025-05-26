@@ -1,0 +1,44 @@
+# Build defaults for all device classes
+
+# Device class
+class=pi5
+
+# Device variant
+variant=none
+
+# Default hostname
+hostname=raspberrypi
+
+# A user account with this name will be created on the device
+user1=pi
+
+# Password required to log into the above account. If empty, the account will be locked.
+user1pass=
+
+# Default locale
+locale1="en_GB.UTF-8"
+
+# Default keymap
+keyboard_keymap=gb
+
+# Default keyboard layout
+# debconf-show keyboard-configuration keyboard-configuration/xkb-keymap
+keyboard_layout="English (UK)"
+
+# Default timezone
+# /etc/timezone
+timezone="Europe/London"
+
+# The profile used to construct the device root filesystem
+profile=
+
+# If y, automatically include net-misc/openssh-server in the profile to enable
+# SSH access to the device via user1.
+ssh_user1=n
+
+# The storage type used by the device. Supported values are sd, emmc or nvme.
+storage_type=sd
+
+# Logical sector size of the device storage for which the image is intended. 
+# The output raw image file size will be a multiple of this value.
+sector_size=512

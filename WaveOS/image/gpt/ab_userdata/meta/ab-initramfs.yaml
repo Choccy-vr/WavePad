@@ -1,0 +1,7 @@
+---
+name: ab-initramfs
+mmdebstrap:
+  packages:
+    - sed
+    - coreutils
+    - initramfs-tools

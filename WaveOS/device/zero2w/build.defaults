@@ -1,0 +1,3 @@
+# Build defaults for Zero 2 W class devices
+class=zero2w
+storage_type=sd

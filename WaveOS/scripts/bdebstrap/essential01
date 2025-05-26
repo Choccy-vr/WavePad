@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -eu
+
+# Dir::Etc::TrustedParts for keys was only valid for pkg download at chroot creation
+# Removing it in essential means customize can use apt in the chroot.
+if [ -s $1/etc/apt/apt.conf.d/99mmdebstrap ] ; then
+   sed -i "\|Dir\:\:Etc\:\:TrustedParts.*$IGconf_sys_apt_keydir|d" $1/etc/apt/apt.conf.d/99mmdebstrap
+fi

@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -eu
+
+# Remove the apt proxy if it was added
+if [ -s $1/etc/apt/apt.conf.d/99mmdebstrap ] ; then
+   if [[ ! -z ${IGconf_sys_apt_proxy_http+z} ]] ; then
+      sed -i "\|Acquire\:\:http.*$IGconf_sys_apt_proxy_http|d" $1/etc/apt/apt.conf.d/99mmdebstrap
+   fi
+fi
+
+# Write issue info
+GH=$(git describe --dirty 2> /dev/null || \
+   git describe --match=NeVeRmAtCh --always --abbrev=40 --dirty 2> /dev/null || \
+   git rev-parse HEAD 2> /dev/null || \
+   echo "999-unknown")
+
+mkdir -p $1/etc
+echo "Generated using rpi-image-gen ${GH} on $(date +%Y-%m-%d)" > $1/etc/rpi-issue

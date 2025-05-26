@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Functions available to the rpi-image-gen core and wider system
+
+msg() {
+   date +"[%T] $*"
+}
+export -f msg
+
+
+#log (){
+#  msg "$*" | tee -a "${LOG_FILE}"
+#}
+#export -f log
+
+
+err (){
+   >&2 msg "$*"
+}
+export -f err
+
+
+die (){
+   err "$*"
+   exit 1
+}
+export -f die
+
+
+run()
+{
+   env "$@"
+   _ret=$?
+   if [[ $_ret -ne 0 ]]
+   then
+      die "Error: [$*] ($_ret)"
+   fi
+}
+export -f run
+
+
+rund()
+{
+   if [ "$#" -gt 1 ] && [ -d  "$1" ] ; then
+      local _dir="$1"
+      shift 1
+      env -C "$_dir" "$@"
+      _ret=$?
+      if [[ $_ret -ne 0 ]]
+      then
+         die "Error: [$*] ($_ret)"
+      fi
+   fi
+}
+export -f rund

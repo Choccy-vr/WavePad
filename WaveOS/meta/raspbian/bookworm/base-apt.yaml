@@ -1,0 +1,45 @@
+---
+name: raspbian-bookworm-armhf
+mmdebstrap:
+  architectures:
+    - armhf
+  mode: auto
+  variant: apt
+  mirrors:
+    - deb [arch=armhf] http://raspbian.raspberrypi.com/raspbian/ bookworm main contrib non-free rpi
+  aptopts:
+    - APT::Install-Suggests "false"
+    - APT::Install-Recommends "false"
+  dpkgopts:
+    - path-exclude=/usr/share/man/*
+    - path-include=/usr/share/man/man[1-9]/*
+    - path-exclude=/usr/share/locale/*
+    - path-include=/usr/share/locale/locale.alias
+    - path-exclude=/usr/share/doc/*
+    - path-include=/usr/share/doc/*/copyright
+    - path-include=/usr/share/doc/*/changelog.Debian.*
+    - path-exclude=/usr/share/{doc,info,man,omf,help,gnome/help}/*
+    - path-exclude=/usr/share/lintian/*
+  packages:
+    - raspbian-archive-keyring
+  essential-hooks:
+    - echo tzdata tzdata/Areas select "$IGconf_device_timezone_area"
+        | chroot $1 debconf-set-selections
+    - echo tzdata tzdata/Zones/$IGconf_device_timezone_area select "$IGconf_device_timezone_city"
+        | chroot $1 debconf-set-selections
+    - echo locales locales/locales_to_be_generated multiselect "$IGconf_device_locale1"
+        | chroot $1 debconf-set-selections
+    - echo locales locales/default_environment_locale select "$IGconf_device_locale1"
+        | chroot $1 debconf-set-selections
+    - echo keyboard-configuration keyboard-configuration/variant select "$IGconf_device_keyboard_layout"
+        | chroot $1 debconf-set-selections
+    - echo keyboard-configuration keyboard-configuration/xkb-keymap select "$IGconf_device_keyboard_keymap"
+        | chroot $1 debconf-set-selections
+  customize-hooks:
+    - test -f $1/usr/share/keyrings/raspbian-archive-keyring.gpg || false
+    - mkdir -p $1/etc/apt/sources.list.d
+    - |-
+      cat <<- EOF > $1/etc/apt/sources.list.d/raspbian.list
+      deb [arch=armhf signed-by=/usr/share/keyrings/raspbian-archive-keyring.gpg] http://raspbian.raspberrypi.com/raspbian/ bookworm main contrib non-free rpi
+      EOF
+    - sed -i '/raspbian\.raspberrypi\.com/d' $1/etc/apt/sources.list

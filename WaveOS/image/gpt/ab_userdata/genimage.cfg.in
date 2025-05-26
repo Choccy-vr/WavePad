@@ -1,0 +1,151 @@
+image <IMAGE_NAME>.<IMAGE_SUFFIX>.sparse {
+   android-sparse {
+      image = <IMAGE_NAME>.<IMAGE_SUFFIX>
+   }
+}
+
+image config.sparse {
+   android-sparse {
+      image = config.vfat
+   }
+}
+
+image bootA.sparse {
+   android-sparse {
+      image = bootA.vfat
+   }
+}
+
+image bootB.sparse {
+   android-sparse {
+      image = bootB.vfat
+   }
+
+}
+image systemA.sparse {
+   android-sparse {
+      image = systemA.ext4
+   }
+}
+
+image systemB.sparse {
+   android-sparse {
+      image = systemB.ext4
+   }
+}
+
+image data.sparse {
+   android-sparse {
+      image = data.ext4
+   }
+}
+
+image <IMAGE_NAME>.<IMAGE_SUFFIX> {
+   hdimage {
+      align = 8M
+      partition-table-type = "gpt"
+      gpt-location = 8M
+   }
+
+   partition config {
+      in-partition-table = true
+      image = config.vfat
+      partition-type-uuid = F
+      bootable = true
+   }
+
+   partition bootA {
+      in-partition-table = true
+      image = bootA.vfat
+      partition-type-uuid = F
+      bootable = true
+   }
+
+   partition bootB {
+      in-partition-table = true
+      image = bootB.vfat
+      partition-type-uuid = F
+      bootable = true
+   }
+
+   partition systemA {
+      in-partition-table = true
+      image = systemA.ext4
+      partition-type-uuid = L
+   }
+
+   partition systemB {
+      in-partition-table = true
+      image = systemB.ext4
+      partition-type-uuid = L
+   }
+
+   partition data {
+      in-partition-table = true
+      image = data.ext4
+      partition-type-uuid = L
+   }
+}
+
+image config.vfat {
+   vfat {
+      label = "BOOTFS"
+      file "autoboot.txt" { image = "autoboot.txt" }
+      extraargs = "-s 1"
+   }
+   size = 32M
+}
+
+image bootA.vfat {
+   vfat {
+      label = "BOOTA"
+      extraargs = "-i <BOOTA_UUID>"
+   }
+   size = <FW_SIZE>
+   mountpoint = "/boot/firmware"
+   exec-pre = "<SLOTP> BOOT"
+}
+
+image systemA.ext4 {
+   ext4 {
+      use-mke2fs = true
+      mke2fs-conf = <MKE2FSCONF>
+      label = "SYSTEMA"
+      extraargs = "-U <SYSTEMA_UUID>"
+   }
+   size = <SYSTEM_SIZE>
+   mountpoint = "/"
+   exec-pre = "<SLOTP> SYSTEM"
+}
+
+image bootB.vfat {
+   vfat {
+      label = "BOOTB"
+      extraargs = "-i <BOOTB_UUID>"
+   }
+   size = <FW_SIZE>
+   mountpoint = "/boot/firmware"
+   exec-pre = "<SLOTP> BOOT"
+}
+
+image systemB.ext4 {
+   ext4 {
+      use-mke2fs = true
+      mke2fs-conf = <MKE2FSCONF>
+      label = "SYSTEMB"
+      extraargs = "-U <SYSTEMB_UUID>"
+   }
+   size = <SYSTEM_SIZE>
+   mountpoint = "/"
+   exec-pre = "<SLOTP> SYSTEM"
+}
+
+image data.ext4 {
+   empty = true
+   ext4 {
+      use-mke2fs = true
+      label = "USERDATA"
+   }
+   size = 64M
+   mountpoint = "/data"
+}

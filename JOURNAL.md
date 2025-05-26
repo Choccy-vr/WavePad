@@ -11,8 +11,6 @@ created_at: "2025-05-22"
 
 - Submited my pitch to the Slack server
 
-
-
 **Total time spent: 1.5h**
 
 # May 23rd: Started PCB
@@ -40,3 +38,9 @@ created_at: "2025-05-22"
 ![](C:\Users\wante\AppData\Roaming\marktext\images\2025-05-24-19-48-04-image.png)
 
 **Total time spent: 3h**
+
+# May 25th: Started work on base OS
+
+- Created base OS using Rpi-Image-Gen.
+
+- Based off slim example

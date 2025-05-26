@@ -1,0 +1,3 @@
+# Build defaults for Zero 2 W class devices
+class=cm4
+storage_type=sd

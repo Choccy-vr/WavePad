@@ -1,0 +1,5 @@
+---
+name: ca-certs
+mmdebstrap:
+  packages:
+    - ca-certificates

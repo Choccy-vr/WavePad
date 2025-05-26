@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -eu
+
+# Install slot rules
+install -m 0644 -D ../device/slot.rules $1/etc/udev/rules.d/90-rpi-slot.rules
+
+# Install provision map
+if igconf isset image_pmap ; then
+   cp ../device/provisionmap-${IGconf_image_pmap}.json ${IGconf_sys_outputdir}/provisionmap.json
+fi
+
+# Generate slot helper
+mkslot-helper ${IGconf_sys_outputdir}/provisionmap.json > $1/usr/bin/rpi-slot
+chmod +x $1/usr/bin/rpi-slot
+
+# Hint to initramfs-tools we have an ext4 rootfs
+sed -i "s|FSTYPE=\([^ ]*\)|FSTYPE=ext4|" $1/etc/initramfs-tools/initramfs.conf
