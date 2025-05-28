@@ -44,7 +44,7 @@ created_at: "2025-05-22"
 - Created base OS using Rpi-Image-Gen.
 
 - Based off slim example
- 
+
 **Total time spent: 2h**
 
 # May 26th: Started work on desktop enviroment
@@ -52,5 +52,11 @@ created_at: "2025-05-22"
 - Designed first few screens in Figma
 - Researched USB Device Classes
 - Started learning Flutter & Dart
-  
+
 **Total time spent: 1.5h**
+
+# May 28th: Learning Flutter
+
+- Continued learning Flutter & Dart
+
+**Total time spent: 2h**
