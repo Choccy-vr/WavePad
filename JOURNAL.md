@@ -55,8 +55,9 @@ created_at: "2025-05-22"
 
 **Total time spent: 1.5h**
 
-# May 28th: Learning Flutter
+# May 28th: Learning Flutter & Fixed OS
 
 - Continued learning Flutter & Dart
+- Added Composite USB Device in WaveOS
 
 **Total time spent: 2h**

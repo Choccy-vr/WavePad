@@ -15,3 +15,8 @@ if [ -z "$ROOTFS_DIR" ]; then
   echo "Usage: $0 <rootfs_directory>"
   exit 1
 fi
+
+#enable USB
+systemctl daemon-reload
+systemctl enable usb-gadget.service
+systemctl start usb-gadget.service

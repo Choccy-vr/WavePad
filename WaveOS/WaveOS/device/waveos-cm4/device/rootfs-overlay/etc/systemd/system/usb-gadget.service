@@ -1,0 +1,11 @@
+[Unit]
+Description=WavePad USB Gadget Setup
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/usb_gadget.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
