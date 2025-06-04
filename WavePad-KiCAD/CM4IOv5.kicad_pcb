@@ -9261,6 +9261,18 @@
 			(justify left bottom)
 		)
 	)
+	(gr_text "WayWayWay"
+		(at 155.55 71.3 0)
+		(layer "B.SilkS")
+		(uuid "a04a4399-f45f-49b1-98ab-1e6f08e6e814")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+			(justify left bottom mirror)
+		)
+	)
 	(segment
 		(start 139.675 59.375)
 		(end 138.85 59.375)
