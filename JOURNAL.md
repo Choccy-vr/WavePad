@@ -61,3 +61,13 @@ created_at: "2025-05-22"
 - Added Composite USB Device in WaveOS
 
 **Total time spent: 2h**
+
+# June 3rd: Finished v1.0 PCB
+
+- Redid entire PCB
+
+- Finished V1.0 PCB
+
+![](C:\Users\wante\AppData\Roaming\marktext\images\2025-06-03-21-37-12-image.png)
+
+**Total time spent: 3h**
