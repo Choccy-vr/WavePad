@@ -71,3 +71,15 @@ created_at: "2025-05-22"
 ![](C:\Users\wante\AppData\Roaming\marktext\images\2025-06-03-21-37-12-image.png)
 
 **Total time spent: 3h**
+
+# June 17th: Back To Work
+
+- I finally finished my other project and ready to work on this one! I have a ton of motivation right now.
+
+- I made the layout of the Home page most of the information are just placeholders right now until I implement all of the features but stuff like time works great.
+
+- I think I am finally getting a hang of Flutter somethings I don't really like but I can't deny it is probably the best way to make good looking UI
+  
+  ![Screenshot 2025-06-17 102922.png](C:\Users\wante\WavePad\Jounal%20Img\Screenshot%202025-06-17%20102922.png)
+
+**Total Time Spent: 3h**
