@@ -83,3 +83,13 @@ created_at: "2025-05-22"
   ![Screenshot 2025-06-17 102922.png](C:\Users\wante\WavePad\Jounal%20Img\Screenshot%202025-06-17%20102922.png)
 
 **Total Time Spent: 3h**
+
+- I made the Apps Screen too I think it looks really good
+
+- I also researched and decided how I am going to handle data from services like weather to allow for easy cross app communication
+
+- I am running into this weird bug on my home screen where I have to double press the right arrow to make it transtion to the new page but the apps page doesn't have that issue
+
+![](C:\Users\wante\AppData\Roaming\marktext\images\2025-06-17-16-01-51-image.png)
+
+**Total Time Spent: 2h**
