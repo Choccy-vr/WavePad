@@ -9,7 +9,7 @@ import 'dart:async';
 // Import diffrent scripts
 import 'widgets/system_toolbar.dart';
 import 'apps.dart'; // Import apps page
-import 'transitions/slide_route.dart';
+import 'widgets/clock_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -69,16 +69,6 @@ class Home_Page extends StatefulWidget {
 }
 
 class _HomePageState extends State<Home_Page> {
-  int _counter = 0;
-  DateTime currentDate = DateTime.now();
-  Timer? _timer;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   void _navigateToApps() {
     Navigator.push(
       context,
@@ -88,37 +78,6 @@ class _HomePageState extends State<Home_Page> {
         },
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _startPreciseTimer();
-  }
-
-  void _startPreciseTimer() async {
-    // Calculate milliseconds until the next second
-    final now = DateTime.now();
-    final msUntilNextSecond = 1000 - now.millisecond;
-
-    // One-shot timer to align to the next second
-    _timer = Timer(Duration(milliseconds: msUntilNextSecond), () {
-      setState(() {
-        currentDate = DateTime.now();
-      });
-      // Now start a periodic timer that fires every second
-      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-        setState(() {
-          currentDate = DateTime.now();
-        });
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
   }
 
   @override
@@ -246,7 +205,8 @@ class _HomePageState extends State<Home_Page> {
                           ),
                         ),
                       ),
-                      Column(
+                      const ClockWidget(),
+                      /*Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
@@ -270,7 +230,7 @@ class _HomePageState extends State<Home_Page> {
                                 ),
                           ),
                         ],
-                      ),
+                      ),*/
                     ],
                   ),
                 ),

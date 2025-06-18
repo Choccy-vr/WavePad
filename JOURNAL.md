@@ -93,3 +93,11 @@ created_at: "2025-05-22"
 ![](C:\Users\wante\AppData\Roaming\marktext\images\2025-06-17-16-01-51-image.png)
 
 **Total Time Spent: 2h**
+
+# June 18th: Fixed Navigation Bug
+
+- I finally the bug where you have to double press the right arrow to navigate to the next page
+
+- I still have to decide where I put the apps so the Enviroment can recognize it.
+
+**Total Time Spent: 1h**
