@@ -114,4 +114,14 @@ created_at: "2025-05-22"
 
 - Wave_Env (Desktop Enviroment) will scan this directory for apps and get the icon from the image in the app folder
 
-**Total Time Spent: 4h**
+# June 20th: OS
+
+- Now comes the hard part the OS
+
+- I already have the base OS based oof of Raspberry Pi OS Lite
+
+- But I am now creating and database manager for cross app communication
+
+- I also have to create the system services for a bunch of the apps to get them to work in the background
+
+**Total Time Spent: 6h**
