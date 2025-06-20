@@ -1,10 +1,85 @@
+import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'widgets/system_toolbar.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
-class AppsPage extends StatelessWidget {
+class DirectoryScanner {
+  // Stream-based async scanning
+  static Stream<FileSystemEntity> scanDirectoryStream(
+    String directoryPath, {
+    bool recursive = false,
+  }) async* {
+    final directory = Directory(directoryPath);
+
+    try {
+      if (await directory.exists()) {
+        await for (final entity in directory.list(recursive: recursive)) {
+          yield entity; // Streams each file as it's found
+        }
+      }
+    } catch (e) {
+      print('Error scanning directory: $e');
+    }
+  }
+}
+
+class AppsPage extends StatefulWidget {
   const AppsPage({super.key});
+
+  @override
+  State<AppsPage> createState() => _AppsPageState();
+}
+
+class _AppsPageState extends State<AppsPage> {
+  List<FileSystemEntity> _entities = [];
+  bool _isScanning = false;
+
+  Future<void> _scanDirectoryAsync() async {
+    setState(() {
+      _isScanning = true;
+      _entities.clear();
+    });
+
+    // Stream
+    await for (final entity in DirectoryScanner.scanDirectoryStream(
+      "~/Applications",
+      recursive: false, // Do not scan all subdirectories
+    )) {
+      setState(() {
+        _entities.add(entity);
+      });
+    }
+
+    setState(() => _isScanning = false);
+  }
+
+  Future<void> startApp(String appPath) async {
+    try {
+      final process = await Process.start(appPath, []);
+
+      // Listen to output
+      process.stdout.transform(utf8.decoder).listen((data) {
+        print('App output: $data');
+      });
+
+      process.stderr.transform(utf8.decoder).listen((data) {
+        print('App error: $data');
+      });
+
+      // Wait for process to finish
+      final exitCode = await process.exitCode;
+      print('App exited with code: $exitCode');
+    } catch (e) {
+      print('Failed to start app: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scanDirectoryAsync(); // Scan apps on startup
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +100,7 @@ class AppsPage extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  //Toolbar
                   Align(
                     alignment: Alignment.topRight,
                     child: Padding(
@@ -32,6 +108,7 @@ class AppsPage extends StatelessWidget {
                       child: SystemToolbar(),
                     ),
                   ),
+                  //Apps
                   Center(
                     child: SizedBox(
                       width: 700,
@@ -40,99 +117,41 @@ class AppsPage extends StatelessWidget {
                         mainAxisSpacing: 50,
                         crossAxisSpacing: 80,
                         crossAxisCount: 4,
-                        children: [
-                          SizedBox(
-                            width: 136,
-                            height: 136,
-                            child: FloatingActionButton(
-                              heroTag: 'app1',
-                              child: Icon(Symbols.add_2_rounded, size: 60),
-                              onPressed: () {
-                                print('App clicked');
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 136,
-                            height: 136,
-                            child: FloatingActionButton(
-                              heroTag: 'app2',
-                              child: Icon(Symbols.add_2_rounded, size: 60),
-                              onPressed: () {
-                                print('App clicked');
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 136,
-                            height: 136,
-                            child: FloatingActionButton(
-                              heroTag: 'app3',
-                              child: Icon(Symbols.add_2_rounded, size: 60),
-                              onPressed: () {
-                                print('App clicked');
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 136,
-                            height: 136,
-                            child: FloatingActionButton(
-                              heroTag: 'app4',
-                              child: Icon(Symbols.add_2_rounded, size: 60),
-                              onPressed: () {
-                                print('App clicked');
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 136,
-                            height: 136,
-                            child: FloatingActionButton(
-                              heroTag: 'app5',
-                              child: Icon(Symbols.add_2_rounded, size: 60),
-                              onPressed: () {
-                                print('App clicked');
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 136,
-                            height: 136,
-                            child: FloatingActionButton(
-                              heroTag: 'app6',
-                              child: Icon(Symbols.add_2_rounded, size: 60),
-                              onPressed: () {
-                                print('App clicked');
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 136,
-                            height: 136,
-                            child: FloatingActionButton(
-                              heroTag: 'app7',
-                              child: Icon(Symbols.add_2_rounded, size: 60),
-                              onPressed: () {
-                                print('App clicked');
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 136,
-                            height: 136,
-                            child: FloatingActionButton(
-                              heroTag: 'app8',
-                              child: Icon(Symbols.add_2_rounded, size: 60),
-                              onPressed: () {
-                                print('App clicked');
-                              },
-                            ),
-                          ),
-                        ],
+                        children: _entities
+                            .where(
+                              (entity) => entity is Directory,
+                            ) // Look for folders
+                            .map((entity) {
+                              // Get just the folder name (App1, App2, etc.)
+                              final appName = entity.path
+                                  .split(Platform.pathSeparator)
+                                  .last;
+
+                              return SizedBox(
+                                width: 136,
+                                height: 136,
+                                child: FloatingActionButton(
+                                  heroTag: 'app_$appName',
+                                  child: Image.file(
+                                    File('${entity.path}/icon.png'),
+                                  ),
+                                  onPressed: () {
+                                    print('App folder clicked: $appName');
+                                    startApp('${entity.path}/$appName');
+                                  },
+                                ),
+                              );
+                            })
+                            .toList(),
                       ),
                     ),
                   ),
+                  //Loading indicator
+                  if (_isScanning)
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: CircularProgressIndicator(),
+                    ),
                 ],
               ),
             ],

@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:intl/intl.dart';
-import 'dart:async';
 
 // Import diffrent scripts
 import 'widgets/system_toolbar.dart';

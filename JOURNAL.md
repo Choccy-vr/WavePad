@@ -101,3 +101,17 @@ created_at: "2025-05-22"
 - I still have to decide where I put the apps so the Enviroment can recognize it.
 
 **Total Time Spent: 1h**
+
+# June 19 & 20th: app installing
+
+- I made a package installer for packaging linux executables as .wvpkg
+
+- I made a new file format for apps called wvpkg (Wave Package)
+
+- I think it sounds pretty good.
+
+- I also made it install all apps to ~/Applications a new folder in WaveOS
+
+- Wave_Env (Desktop Enviroment) will scan this directory for apps and get the icon from the image in the app folder
+
+**Total Time Spent: 4h**
