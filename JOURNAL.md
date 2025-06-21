@@ -80,7 +80,7 @@ created_at: "2025-05-22"
 
 - I think I am finally getting a hang of Flutter somethings I don't really like but I can't deny it is probably the best way to make good looking UI
   
-  ![Screenshot 2025-06-17 102922.png](C:\Users\wante\WavePad\Jounal%20Img\Screenshot%202025-06-17%20102922.png)
+  ![Screenshot 2025-06-17 102922.png](https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Screenshot%202025-06-17%20102922.png)
 
 **Total Time Spent: 3h**
 
@@ -140,4 +140,4 @@ created_at: "2025-05-22"
 
 - The thing I am most proud of I did today was simplifying the creation of a table, it went from what I believe is a mess of a string with no hints on what you want to something nice and simple, shown in the picture.
 
-- ![](C:\Users\wante\AppData\Roaming\marktext\images\2025-06-21-14-39-34-image.png)
+- ![](https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Screenshot%202025-06-21%20143021.png)
