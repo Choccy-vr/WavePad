@@ -125,3 +125,19 @@ created_at: "2025-05-22"
 - I also have to create the system services for a bunch of the apps to get them to work in the background
 
 **Total Time Spent: 6h**
+
+# June 21st: SQLite Manager
+
+- Good progress was made today, and really, the past two days. 
+
+- I basically finished my SQLite Manager. 
+
+- SQLite Manager is a class I made that pretty much simplifies the SQLite experience for me. 
+
+- I organized the project, but it was nothing big. 
+
+- I also made it make a .wvdb file instead of a .db file simply because it looks more professional in my opinion. 
+
+- The thing I am most proud of I did today was simplifying the creation of a table, it went from what I believe is a mess of a string with no hints on what you want to something nice and simple, shown in the picture.
+
+- ![](C:\Users\wante\AppData\Roaming\marktext\images\2025-06-21-14-39-34-image.png)
