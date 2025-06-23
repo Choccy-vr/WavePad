@@ -5,9 +5,9 @@ namespace WaveDB
 {
     class Program
     {
-        static string SystemDBPath = "C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\system.wvdb";
+        //static string SystemDBPath = "C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\system.wvdb";
         // Production code 
-        // static string SystemDBPath = "/var/lib/WaveOS/system.wvdb";
+        static string SystemDBPath = "/var/lib/WaveOS/system.wvdb";
 
         // Table Names
         static string SystemInfoTable = "system_info";

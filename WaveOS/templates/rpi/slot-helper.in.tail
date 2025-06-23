@@ -1,7 +1,12 @@
 # End auto-generated
 
+err (){
+   >&2 echo "$@"
+}
+
+
 die (){
-   >&2 echo "$*"
+   err "$@"
    exit 1
 }
 
@@ -111,7 +116,7 @@ case $bootdev in
          eval crypt=\$"${d}_ENCRYPTED"
          if [ "$crypt" = "y" ] ; then
             eval "bdev=\$${d}"
-            test -e "/dev/mapper/${bdev}" || die "bad mapper blockdev $bdev"
+            test -e "/dev/mapper/${bdev}" || err "mapped dev $bdev unavailable"
          else
             _v="k${d}"
             eval "$_v=\${bootdev}p\${$d}"

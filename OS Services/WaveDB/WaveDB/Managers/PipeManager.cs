@@ -135,18 +135,17 @@ namespace WaveDB
                     dataDict[property.Name] = property.Value.GetString() ?? string.Empty;
                 }
 
-                var connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                //var connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
                 // Production
-                // var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
                 if (connection == null)
                 {
                     Console.WriteLine("Database does not exist. Creating a new database...");
-                    SQLite_Manager.CreateDatabase($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
-                    connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
-                    /* Production 
+                    //SQLite_Manager.CreateDatabase($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                    //connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
                     SQLite_Manager.CreateDatabase($"/var/lib/WaveOS/{databaseName}.wvdb");
                     connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
-                    */
+                    
                 }
 
                 int recordsWritten = 0;
@@ -197,18 +196,17 @@ namespace WaveDB
                     order_clause = order.Value.GetString() ?? string.Empty;
                 }
 
-                var connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                //var connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
                 // Production
-                // var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
                 if (connection == null)
                 {
                     Console.WriteLine("Database does not exist. Creating a new database...");
-                    SQLite_Manager.CreateDatabase($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
-                    connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
-                    /* Production
+                    /*SQLite_Manager.CreateDatabase($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                    connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");*/
                     SQLite_Manager.CreateDatabase($"/var/lib/WaveOS/{databaseName}.wvdb");
                     connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
-                    */
+                    
                 }
 
                 var results = SQLite_Manager.ExecuteReader(connection, tableName, propertyNames.Count > 0 ? propertyNames.ToArray() : null!, where_clause, order_clause);

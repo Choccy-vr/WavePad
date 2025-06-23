@@ -8,12 +8,10 @@
    {
       "partitions": [
          {
-            "name": "boot",
-            "id": "1"
+            "image": "boot"
          },
          {
-            "name": "root",
-            "id": "2"
+            "image": "root"
          }
       ]
    }

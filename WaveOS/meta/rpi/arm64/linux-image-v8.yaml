@@ -1,10 +1,9 @@
 ---
 name: rpi-linux-v8
+env:
+  INITRD: "No"
 mmdebstrap:
   architectures:
     - arm64
   packages:
-    - initramfs-tools
-    - linux-image-6.6.51+rpt-rpi-v8
-  customize-hooks:
-    - sed -i 's/^update_initramfs=.*/update_initramfs=no/' $1/etc/initramfs-tools/update-initramfs.conf
+    - linux-image-rpi-v8

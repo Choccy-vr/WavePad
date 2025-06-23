@@ -39,7 +39,7 @@ image <IMAGE_NAME>.<IMAGE_SUFFIX> {
 image boot.vfat {
    vfat {
       label = "BOOT"
-      extraargs = "-s 4 -S <SECTOR_SIZE> -i <BOOT_UUID>"
+      extraargs = "-S <SECTOR_SIZE> -i <BOOT_UUID>"
    }
    size = <FW_SIZE>
    mountpoint = "/boot/firmware"

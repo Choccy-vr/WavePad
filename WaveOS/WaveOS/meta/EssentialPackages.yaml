@@ -7,4 +7,5 @@ mmdebstrap:
     - build-essential
     - wget
     - nano
+    - dotnet-runtime-9.0
     

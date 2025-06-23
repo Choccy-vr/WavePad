@@ -139,8 +139,6 @@ created_at: "2025-05-22"
 - I also made it make a .wvdb file instead of a .db file simply because it looks more professional in my opinion. 
 
 - The thing I am most proud of I did today was simplifying the creation of a table, it went from what I believe is a mess of a string with no hints on what you want to something nice and simple, shown in the picture.
-  
-  
 
 - ![](https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Screenshot%202025-06-21%20143021.png)
 
@@ -174,4 +172,8 @@ created_at: "2025-05-22"
 
 - I removed isSetupComplete because that should be handled within Setup's wvdb
 
-**Total Time Spent: 2h**
+- I built all the apps and added them to WaveOS
+
+- If I had the hardware technically I could build WaveOS and have a running OS altough with a lot of problems.
+
+**Total Time Spent: 4h**

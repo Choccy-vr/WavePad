@@ -1,0 +1,4 @@
+C:\Users\wante\WavePad\OS Services\WaveDB\WaveDB\bin\Release\net9.0\linux-x64\publish\WaveDB.pdb
+C:\Users\wante\WavePad\OS Services\WaveDB\WaveDB\bin\Release\net9.0\linux-x64\publish\libsqlite3.so
+C:\Users\wante\WavePad\OS Services\WaveDB\WaveDB\bin\Release\net9.0\linux-x64\publish\SQLite.Interop.dll
+C:\Users\wante\WavePad\OS Services\WaveDB\WaveDB\bin\Release\net9.0\linux-x64\publish\WaveDB

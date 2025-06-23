@@ -8,8 +8,7 @@
    {
       "partitions": [
          {
-            "name": "config",
-            "id": "1"
+            "image": "config"
          }
       ]
    },
@@ -18,7 +17,7 @@
          "A": {
             "partitions": [
                {
-                  "name": "bootA",
+                  "image": "bootA",
                   "id": "2",
                   "role": "boot"
                }
@@ -31,7 +30,7 @@
          "B": {
             "partitions": [
                {
-                  "name": "bootB",
+                  "image": "bootB",
                   "id": "3",
                   "role": "boot"
                }
@@ -44,7 +43,7 @@
          "A": {
             "partitions": [
                {
-                  "name": "systemA",
+                  "image": "systemA",
                   "id": "4",
                   "role": "system"
                }
@@ -57,7 +56,7 @@
          "B": {
             "partitions": [
                {
-                  "name": "systemB",
+                  "image": "systemB",
                   "id": "5",
                   "role": "system"
                }
@@ -68,8 +67,7 @@
    {
       "partitions": [
          {
-            "name": "data",
-            "id": "6"
+            "image": "data"
          }
       ]
    }

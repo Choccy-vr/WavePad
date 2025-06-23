@@ -8,23 +8,23 @@
    {
       "partitions": [
          {
-            "name": "boot",
-            "id": "1"
+            "image": "boot"
          }
       ]
    },
    {
       "encrypted": {
-         "luks": {
-            "version": 2,
+         "luks2": {
             "key_size": 512,
             "cipher": "aes-xts-plain64",
-            "hash": "sha256"
+            "label": "root",
+            "hash": "sha256",
+            "mname": "cryptroot",
+            "etype": "raw"
          },
          "partitions": [
             {
-               "name": "root",
-               "id": "cryptroot"
+               "image": "root"
             }
          ]
       }

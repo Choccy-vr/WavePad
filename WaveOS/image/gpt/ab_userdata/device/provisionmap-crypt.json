@@ -8,8 +8,7 @@
    {
       "partitions": [
          {
-            "name": "config",
-            "id": "1"
+            "image": "config"
          }
       ]
    },
@@ -18,7 +17,7 @@
          "A": {
             "partitions": [
                {
-                  "name": "bootA",
+                  "image": "bootA",
                   "id": "2",
                   "role": "boot"
                }
@@ -31,7 +30,7 @@
          "B": {
             "partitions": [
                {
-                  "name": "bootB",
+                  "image": "bootB",
                   "id": "3",
                   "role": "boot"
                }
@@ -40,40 +39,30 @@
       }
    },
    {
-      "slots": {
-         "A": {
-            "encrypted": {
-               "luks": {
-                  "version": 2,
-                  "key_size": 512,
-                  "cipher": "aes-xts-plain64",
-                  "hash": "sha256"
-               },
+      "encrypted": {
+         "luks2": {
+            "key_size": 512,
+            "cipher": "aes-xts-plain64",
+            "hash": "sha256",
+            "label": "root",
+            "mname": "cryptroot",
+            "etype": "partitioned"
+         },
+         "slots": {
+            "A": {
                "partitions": [
                   {
-                     "name": "systemA",
-                     "id": "cryptrootA",
+                     "id": "1",
+                     "image": "systemA",
                      "role": "system"
                   }
                ]
-            }
-         }
-      }
-   },
-   {
-      "slots": {
-         "B": {
-            "encrypted": {
-               "luks": {
-                  "version": 2,
-                  "key_size": 512,
-                  "cipher": "aes-xts-plain64",
-                  "hash": "sha256"
-               },
+            },
+            "B": {
                "partitions": [
                   {
-                     "name": "systemB",
-                     "id": "cryptrootB",
+                     "id": "2",
+                     "image": "systemB",
                      "role": "system"
                   }
                ]
@@ -84,8 +73,7 @@
    {
       "partitions": [
          {
-            "name": "data",
-            "id": "6"
+            "image": "data"
          }
       ]
    }

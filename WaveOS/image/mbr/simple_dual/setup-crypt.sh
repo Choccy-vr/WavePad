@@ -10,7 +10,7 @@ case $LABEL in
       case $IGconf_image_rootfs_type in
          ext4)
             cat << EOF > $IMAGEMOUNTPATH/etc/fstab
-/dev/mapper/cryptroot /               ext4 rw,relatime,errors=remount-ro 0 1
+/dev/mapper/cryptroot /               ext4 rw,relatime,errors=remount-ro,commit=30 0 1
 EOF
             ;;
          btrfs)
@@ -23,7 +23,7 @@ EOF
       esac
 
       cat << EOF >> $IMAGEMOUNTPATH/etc/fstab
-UUID=${BOOTUUID^^} /boot/firmware  vfat rw,noatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,errors=remount-ro 0 2
+UUID=${BOOTUUID^^} /boot/firmware  vfat defaults,rw,noatime,errors=remount-ro 0 2
 EOF
       ;;
    BOOT)

@@ -22,8 +22,10 @@ if igconf isset image_rootfs_type ; then
    sed -i "s|FSTYPE=\([^ ]*\)|FSTYPE=${IGconf_image_rootfs_type}|" $1/etc/initramfs-tools/initramfs.conf
 fi
 
-# Always make sure all initramfs are updated
-cp $1/etc/initramfs-tools/update-initramfs.conf $1/etc/initramfs-tools/update-initramfs.conf.bak
-sed -i 's/^update_initramfs=.*/update_initramfs=all/' $1/etc/initramfs-tools/update-initramfs.conf
-chroot $1 update-initramfs -u
-mv -f $1/etc/initramfs-tools/update-initramfs.conf.bak $1/etc/initramfs-tools/update-initramfs.conf
+# Create all images if kernel postinst was instructed to not generate, else
+# update
+if [ "${INITRD:-}" = "No" ]; then
+   chroot $1 update-initramfs -c -k all
+else
+   chroot $1 update-initramfs -u -k all
+fi

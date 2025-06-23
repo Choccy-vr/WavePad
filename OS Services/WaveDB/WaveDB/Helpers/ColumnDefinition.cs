@@ -9,6 +9,7 @@ public class ColumnDefinition
     {
         Name = name;
         DataType = dataType;
+        DefaultValue = string.Empty;
     }
 
     // Fluent methods for easy chaining
