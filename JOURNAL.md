@@ -172,4 +172,6 @@ created_at: "2025-05-22"
 
 - and Reading data works now with where & order by clauses
 
+- I removed isSetupComplete because that should be handled within Setup's wvdb
+
 **Total Time Spent: 2h**

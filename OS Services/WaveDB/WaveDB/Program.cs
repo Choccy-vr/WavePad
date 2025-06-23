@@ -1,4 +1,5 @@
 ﻿using System.Data.SQLite;
+using System.IO.Pipes;
 
 namespace WaveDB
 {
@@ -15,12 +16,11 @@ namespace WaveDB
         static string OSName = "WaveOS";
         static string OSVersion = "1.0.0";
         static string DeviceName = "WavePad";
-        static bool IsSetupComplete = false;
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-
             HandleSystemInfo();
-
+            DatabasePipeServer pipeServer = new DatabasePipeServer();
+            await pipeServer.StartServer();
         }
         static void HandleSystemInfo()
         {
@@ -68,7 +68,6 @@ namespace WaveDB
                 SQLite_Manager.InsertOrReplaceData(connection, SystemInfoTable, "os_name", OSName);
                 SQLite_Manager.InsertOrReplaceData(connection, SystemInfoTable, "os_version", OSVersion);
                 SQLite_Manager.InsertOrReplaceData(connection, SystemInfoTable, "device_name", DeviceName);
-                SQLite_Manager.InsertOrReplaceData(connection, SystemInfoTable, "setup_complete", IsSetupComplete.ToString());
                 Console.WriteLine("Initial system info data populated.");
             }
             else
