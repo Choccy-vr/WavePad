@@ -159,3 +159,17 @@ created_at: "2025-05-22"
 - Writing data should work now but I still have to work on reading data.
 
 **Total Time Spent: 2h**
+
+# June 23rd: Pipes & JSON
+
+- I finished at least v1 of the Pipe Manager
+
+- I switched the data type to JSON 
+
+- I have no idea what I was thinking trying to do it by strings
+
+- Writing data works
+
+- and Reading data works now with where & order by clauses
+
+**Total Time Spent: 2h**

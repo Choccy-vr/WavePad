@@ -108,9 +108,9 @@ namespace WaveDB
         /// This method allows you to specify which properties to select, a WHERE clause, and an ORDER BY clause.
         /// /// It returns a list of dictionaries, where each dictionary represents a row with column names as keys.
         /// </summary>
-        public static List<Dictionary<string, object>> ExecuteReader(SQLiteConnection connection,
-            string tableName, string[] property_names = null, string whereClause = null,
-            Dictionary<string, object> property_values = null, string orderBy = null)
+        public static List<Dictionary<string, object?>> ExecuteReader(SQLiteConnection connection,
+            string tableName, string[]? property_names = null, string? whereClause = null,
+            string? orderBy = null)
         {
             if (!IsValidName(tableName))
                 throw new ArgumentException("Invalid table name");
@@ -125,28 +125,19 @@ namespace WaveDB
             if (!string.IsNullOrEmpty(orderBy))
                 query += $" ORDER BY {orderBy}";
 
-            var results = new List<Dictionary<string, object>>();
+            var results = new List<Dictionary<string, object?>>();
 
             using (SQLiteCommand command = new SQLiteCommand(query, connection))
             {
-                // Add parameters if provided
-                if (property_values != null)
-                {
-                    foreach (var param in property_values)
-                    {
-                        command.Parameters.AddWithValue(param.Key, param.Value);
-                    }
-                }
-
                 using (SQLiteDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        var row = new Dictionary<string, object>();
+                        var row = new Dictionary<string, object?>();
                         for (int i = 0; i < reader.FieldCount; i++)
                         {
                             string columnName = reader.GetName(i);
-                            object value = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                            object? value = reader.IsDBNull(i) ? null : reader.GetValue(i);
                             row[columnName] = value;
                         }
                         results.Add(row);

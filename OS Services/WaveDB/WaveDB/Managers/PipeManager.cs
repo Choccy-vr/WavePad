@@ -1,11 +1,12 @@
 using System.IO.Pipes;
 using System.Text;
+using System.Text.Json;
 
 namespace WaveDB
 {
     public class DatabasePipeServer
     {
-        private NamedPipeServerStream _pipeServer;
+        private NamedPipeServerStream? _pipeServer;
         private bool _isRunning = false;
         private readonly string _pipeName = "WaveDB_Pipe";
 
@@ -39,133 +40,193 @@ namespace WaveDB
 
         private async Task HandleClientRequest()
         {
-            byte[] buffer = new byte[1024];
+            if (_pipeServer == null) throw new ArgumentNullException(nameof(_pipeServer));
+
+            var buffer = new byte[4096];
             int bytesRead = await _pipeServer.ReadAsync(buffer, 0, buffer.Length);
 
-            string request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-            Console.WriteLine($"Pipe Manager: Received request: {request}");
+            if (bytesRead > 0)
+            {
+                string request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                Console.WriteLine($"Pipe Manager: Received request: {request}");
 
-            // Parse the request (you can use JSON or simple format)
-            string response = ProcessRequest(request);
+                string response = ProcessRequest(request);
 
-            // Send response back
-            byte[] responseBytes = Encoding.UTF8.GetBytes(response);
-            await _pipeServer.WriteAsync(responseBytes, 0, responseBytes.Length);
-            await _pipeServer.FlushAsync();
+                byte[] responseBytes = Encoding.UTF8.GetBytes(response);
+                await _pipeServer.WriteAsync(responseBytes, 0, responseBytes.Length);
+                await _pipeServer.FlushAsync();
+
+                Console.WriteLine($"Pipe Manager: Sent response: {response}");
+            }
         }
 
         private string ProcessRequest(string request)
         {
             try
             {
-                // Simple format: "WRITE|database_name|table_name|column=value,column=value"
-                string[] parts = request.Split('|');
+                // Parse JSON request instead of pipe-delimited string
+                var requestObj = JsonSerializer.Deserialize<JsonElement>(request);
 
-                if (parts.Length < 3)
-                    return "ERROR: Invalid request format";
-
-                string action = parts[0];
-                string databaseName = parts[1];
-                string tableName = parts[2];
-                string data = parts[3];
+                string action = requestObj.GetProperty("action").GetString() ?? string.Empty;
+                string databaseName = requestObj.GetProperty("database").GetString() ?? string.Empty;
+                string tableName = requestObj.GetProperty("table").GetString() ?? string.Empty;
 
                 switch (action.ToUpper())
                 {
                     case "WRITE":
-                        return HandleWriteRequest(databaseName, tableName, data);
+                        var writeData = requestObj.GetProperty("data");
+                        return HandleWriteRequest(databaseName, tableName, writeData);
                     case "READ":
-                        var readResult = HandleReadRequest(databaseName, tableName, data);
-                        return readResult != null ? System.Text.Json.JsonSerializer.Serialize(readResult) : "ERROR: No data found";
+                        var readItems = requestObj.TryGetProperty("items", out var items) ? items : (JsonElement?)null;
+                        var where = requestObj.TryGetProperty("where", out var whereElement) ? whereElement : (JsonElement?)null;
+                        var order = requestObj.TryGetProperty("order", out var orderByElement) ? orderByElement : (JsonElement?)null;
+
+                        return HandleReadRequest(databaseName, tableName, readItems,where, order);
                     default:
-                        return "ERROR: Unknown action";
+                        return CreateErrorResponse($"Unknown action: {action}");
                 }
             }
             catch (Exception ex)
             {
-                return $"ERROR: {ex.Message}";
+                return CreateErrorResponse($"Request processing failed: {ex.Message}");
             }
         }
 
-        private string HandleWriteRequest(string databaseName, string tableName, string data)
+        private string CreateSuccessResponse(object data)
+        {
+            var response = new
+            {
+                success = true,
+                error = (string?)null,
+                result = data
+            };
+
+            return JsonSerializer.Serialize(response, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+        }
+
+        private string CreateErrorResponse(string errorMessage)
+        {
+            var response = new
+            {
+                success = false,
+                error = errorMessage,
+                result = (object?)null,
+                timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC")
+            };
+
+            return JsonSerializer.Serialize(response, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+        }
+
+        private string HandleWriteRequest(string databaseName, string tableName, JsonElement writeData)
         {
             try
             {
-                // Parse data: "property_name=os_version,property_value=1.0.0"
                 var dataDict = new Dictionary<string, string>();
-                string[] pairs = data.Split(',');
 
-                foreach (string pair in pairs)
+                // Parse JSON data object
+                foreach (var property in writeData.EnumerateObject())
                 {
-                    string[] keyValue = pair.Split('=');
-                    if (keyValue.Length == 2)
-                    {
-                        dataDict[keyValue[0].Trim()] = keyValue[1].Trim();
-                    }
+                    dataDict[property.Name] = property.Value.GetString() ?? string.Empty;
                 }
 
-                // Use your existing database connection
-                //(Production) var connection = SQLite_Manager.OpenConnection($"/var/lib/wavedb/{databaseName}.wvdb");
                 var connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                // Production
+                // var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
                 if (connection == null)
                 {
                     Console.WriteLine("Database does not exist. Creating a new database...");
-                    // (Production) SQLite_Manager.CreateDatabase($"/var/lib/wavedb/{databaseName}.wvdb");
-                    // (Production) connection = SQLite_Manager.OpenConnection($"/var/lib/wavedb/{databaseName}.wvdb");
                     SQLite_Manager.CreateDatabase($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
                     connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                    /* Production 
+                    SQLite_Manager.CreateDatabase($"/var/lib/WaveOS/{databaseName}.wvdb");
+                    connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                    */
                 }
+
+                int recordsWritten = 0;
                 foreach (var property in dataDict)
                 {
                     Console.WriteLine($"Key: {property.Key}, Value: {property.Value}");
                     SQLite_Manager.InsertOrReplaceData(connection, tableName, property.Key, property.Value);
+                    recordsWritten++;
                 }
-                
 
-
-                return "SUCCESS: Data written";
+                // Return JSON success response
+                return CreateSuccessResponse(new
+                {
+                    action = "WRITE",
+                    database = databaseName,
+                    table = tableName,
+                    records_written = recordsWritten,
+                    timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC")
+                });
             }
             catch (Exception ex)
             {
-                return $"ERROR: {ex.Message}";
+                return CreateErrorResponse($"Write operation failed: {ex.Message}");
             }
         }
 
-        private List<Dictionary<string, object>> HandleReadRequest(string database_name, string tableName, string data)
+        private string HandleReadRequest(string databaseName, string tableName, JsonElement? readItmes, JsonElement? whereClause, JsonElement? order)
         {
             try
             {
-                // Parse data: "property_name=os_version,property_name=os_name"
-                string[] pairs = data.Split(',');
                 var propertyNames = new List<string>();
-
-                foreach (string pair in pairs)
+                string where_clause = string.Empty;
+                string order_clause = string.Empty;
+                // Parse JSON filters if provided
+                if (readItmes.HasValue && readItmes.Value.ValueKind == JsonValueKind.Array)
                 {
-                    string[] keyValue = pair.Split('=');
-                    if (keyValue.Length == 2 && keyValue[0].Trim() == "property_name")
+                    foreach (var filter in readItmes.Value.EnumerateArray())
                     {
-                        propertyNames.Add(keyValue[1].Trim());
+                        propertyNames.Add(filter.GetString() ?? string.Empty);
                     }
                 }
+                if (whereClause.HasValue && whereClause.Value.ValueKind == JsonValueKind.String)
+                {
+                    where_clause = whereClause.Value.GetString() ?? string.Empty;
+                }
+                if (order.HasValue && order.Value.ValueKind == JsonValueKind.String)
+                {
+                    order_clause = order.Value.GetString() ?? string.Empty;
+                }
 
-                // Use your existing database connection
-                //(Production) var connection = SQLite_Manager.OpenConnection($"/var/lib/wavedb/{database_name}.wvdb");
-                var connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{database_name}.wvdb");
+                var connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                // Production
+                // var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
                 if (connection == null)
                 {
                     Console.WriteLine("Database does not exist. Creating a new database...");
-                    // (Production) SQLite_Manager.CreateDatabase($"/var/lib/wavedb/{database_name}.wvdb");
-                    // (Production) connection = SQLite_Manager.OpenConnection($"/var/lib/wavedb/{database_name}.wvdb");
-                    SQLite_Manager.CreateDatabase($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{database_name}.wvdb");
-                    connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{database_name}.wvdb");
+                    SQLite_Manager.CreateDatabase($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                    connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                    /* Production
+                    SQLite_Manager.CreateDatabase($"/var/lib/WaveOS/{databaseName}.wvdb");
+                    connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                    */
                 }
-                // Get data from the database
-                return SQLite_Manager.ExecuteReader(connection, tableName, propertyNames.ToArray());
-                // Todo: Implement more arguments for the read request (WHERE, ORDER BY, etc.)
-                
+
+                var results = SQLite_Manager.ExecuteReader(connection, tableName, propertyNames.Count > 0 ? propertyNames.ToArray() : null!, where_clause, order_clause);
+
+                // Return JSON success response
+                return CreateSuccessResponse(new
+                {
+                    action = "READ",
+                    database = databaseName,
+                    table = tableName,
+                    records_found = results.Count,
+                    data = results,
+                    timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC")
+                });
             }
-            catch
+            catch (Exception ex)
             {
-                return null;
+                return CreateErrorResponse($"Read operation failed: {ex.Message}");
             }
         }
 
