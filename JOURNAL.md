@@ -139,5 +139,23 @@ created_at: "2025-05-22"
 - I also made it make a .wvdb file instead of a .db file simply because it looks more professional in my opinion. 
 
 - The thing I am most proud of I did today was simplifying the creation of a table, it went from what I believe is a mess of a string with no hints on what you want to something nice and simple, shown in the picture.
+  
+  
 
 - ![](https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Screenshot%202025-06-21%20143021.png)
+
+**Total TIme Spent: 5h**
+
+# June 22nd: Pipes!
+
+- I basically finsished all I need to do for the SQLite Manager script so now I am handling comunication from WaveDB to other apps
+
+- I am going to use named Pipes for the apps comunicating with WaveDB
+
+- I probably should've used this instead of a database but I have already gotten this far can't stop now.
+
+- And also it makes it feel more professional and me smarter.
+
+- Writing data should work now but I still have to work on reading data.
+
+**Total Time Spent: 2h**

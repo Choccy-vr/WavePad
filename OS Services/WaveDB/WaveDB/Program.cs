@@ -10,11 +10,17 @@ namespace WaveDB
 
         // Table Names
         static string SystemInfoTable = "system_info";
+
+        // System Info
+        static string OSName = "WaveOS";
+        static string OSVersion = "1.0.0";
+        static string DeviceName = "WavePad";
+        static bool IsSetupComplete = false;
         static void Main(string[] args)
         {
 
             HandleSystemInfo();
-            
+
         }
         static void HandleSystemInfo()
         {
@@ -23,6 +29,7 @@ namespace WaveDB
             {
                 Console.WriteLine("Database file does not exist. Creating a new system database...");
                 SQLite_Manager.CreateDatabase(SystemDBPath);
+                
             }
 
             //Open the system database
@@ -35,7 +42,7 @@ namespace WaveDB
             {
                 throw new Exception("Database connection failed.");
             }
-            
+
             // Check if the system info exists
             if (!SQLite_Manager.isTableExist(connection, SystemInfoTable))
             {
@@ -44,7 +51,6 @@ namespace WaveDB
                     TableBuilder.Id(),
                     TableBuilder.Text("property_name").NotNull().Unique(),
                     TableBuilder.Text("property_value").NotNull(),
-                    TableBuilder.Integer("number").WithDefault("0"),
                     TableBuilder.Timestamp("last_updated")
                 );
 
@@ -54,20 +60,22 @@ namespace WaveDB
                 Console.WriteLine("System info table already exists.");
             }
 
-            // Check if the system info table has the required columns
-            if (SQLite_Manager.ColumnsExist(connection, SystemInfoTable, "os_name", "os_version").Contains("os_name"))
+            // Check if system info data already exists, if not populate initial values
+            var existingData = SQLite_Manager.ExecuteReader(connection, SystemInfoTable);
+            if (existingData.Count == 0)
             {
-                SQLite_Manager.InsertOrReplaceData(connection, SystemInfoTable, "os_name", "WaveOS");
-            }
-            else if (SQLite_Manager.ColumnsExist(connection, SystemInfoTable, "os_version").Contains("os_version"))
-            {
-                SQLite_Manager.InsertOrReplaceData(connection, SystemInfoTable, "os_version", "1.0.0");
+                // Insert initial system info data
+                SQLite_Manager.InsertOrReplaceData(connection, SystemInfoTable, "os_name", OSName);
+                SQLite_Manager.InsertOrReplaceData(connection, SystemInfoTable, "os_version", OSVersion);
+                SQLite_Manager.InsertOrReplaceData(connection, SystemInfoTable, "device_name", DeviceName);
+                SQLite_Manager.InsertOrReplaceData(connection, SystemInfoTable, "setup_complete", IsSetupComplete.ToString());
+                Console.WriteLine("Initial system info data populated.");
             }
             else
             {
-                Console.WriteLine("Fields already exist in the system info table.");
+                Console.WriteLine("System info data already exists.");
             }
-
+            /*
             // Update the OS version
             SQLite_Manager.UpdateData(connection, SystemInfoTable, "os_version", "1.0.1");
             // Retrieve the OS name
@@ -86,9 +94,11 @@ namespace WaveDB
                     Console.WriteLine($"{columnName}: {columnValue}");
                 }
                 Console.WriteLine();
-            }
+            }*/
 
         }
+        
+        
 
     }
 }
