@@ -145,6 +145,12 @@ namespace WaveDB
                     //connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
                     SQLite_Manager.CreateDatabase($"/var/lib/WaveOS/{databaseName}.wvdb");
                     connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                    SQLite_Manager.CreateTable(connection, tableName,
+                        TableBuilder.Id(),
+                        TableBuilder.Text("property_name").NotNull().Unique(),
+                        TableBuilder.Text("property_value").NotNull(),
+                        TableBuilder.Timestamp("last_updated")
+                    );
                     
                 }
 
@@ -201,11 +207,7 @@ namespace WaveDB
                 var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
                 if (connection == null)
                 {
-                    Console.WriteLine("Database does not exist. Creating a new database...");
-                    /*SQLite_Manager.CreateDatabase($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
-                    connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");*/
-                    SQLite_Manager.CreateDatabase($"/var/lib/WaveOS/{databaseName}.wvdb");
-                    connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                    throw new Exception($"Database '{databaseName}' does not exist.");
                     
                 }
 

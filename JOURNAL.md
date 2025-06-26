@@ -177,3 +177,19 @@ created_at: "2025-05-22"
 - If I had the hardware technically I could build WaveOS and have a running OS altough with a lot of problems.
 
 **Total Time Spent: 4h**
+
+# June 26th: Weather
+
+- I didn't journal for a few days but it was all working on weather so I will just add it to today.
+
+- I started work on the Weather Backend Service.
+
+- The structure for the app is going to be a Backend service that runs in the background to get all the data and a Frontend which will get the data and display for the user.
+
+- The weather data will be stored in a accessable .wvdb so other apps can go in and get the same weather data the rest of the system uses.
+
+- I am using Open Meteo because I don't need a API key and I have had experience with it before.
+
+- Right now I am updating my SQLite_Manager to support more complex tables right now it is just key-value pairs.
+
+**Total Time Spent: 6h**
