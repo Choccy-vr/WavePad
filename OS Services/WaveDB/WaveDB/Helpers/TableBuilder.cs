@@ -34,4 +34,12 @@ public static class TableBuilder
         return new ColumnDefinition(name, SQLiteDataType.INTEGER)
             .WithDefault("0");
     }
+    public static ColumnDefinition Blob(string name)
+    {
+        return new ColumnDefinition(name, SQLiteDataType.BLOB);
+    }
+    public static ColumnDefinition Numeric(string name)
+    {
+        return new ColumnDefinition(name, SQLiteDataType.NUMERIC);
+    }
 }

@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "wave_env"
+		},
+		{
+			"path": "WaveOS"
+		},
+		{
+			"path": "OS Services"
+		},
+		{
+			"path": "OS Apps"
+		}
+	],
+	"settings": {
+		"dotnet.defaultSolution": "wave_env/WaveDB.slnx"
+	}
+}

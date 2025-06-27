@@ -81,7 +81,16 @@ namespace WaveDB
                         var where = requestObj.TryGetProperty("where", out var whereElement) ? whereElement : (JsonElement?)null;
                         var order = requestObj.TryGetProperty("order", out var orderByElement) ? orderByElement : (JsonElement?)null;
 
-                        return HandleReadRequest(databaseName, tableName, readItems,where, order);
+                        return HandleReadRequest(databaseName, tableName, readItems, where, order);
+                    case "DELETE":
+                        var whereClause = requestObj.TryGetProperty("where", out var whereElementDelete) ? whereElementDelete : new JsonElement();
+                        return HandleDeleteRequest(databaseName, tableName, whereClause);
+                    case "CREATE":
+                        var Columns = requestObj.TryGetProperty("columns", out var columnsElement) ? columnsElement : new JsonElement();
+                        return HandleCreateRequest(databaseName, tableName, Columns);
+                    case "WRITE-ROW":
+                        var writeRowData = requestObj.TryGetProperty("data", out var writeDataElement) ? writeDataElement : new JsonElement();
+                        return HandleWriteRowRequest(databaseName, tableName, writeRowData);
                     default:
                         return CreateErrorResponse($"Unknown action: {action}");
                 }
@@ -151,7 +160,7 @@ namespace WaveDB
                         TableBuilder.Text("property_value").NotNull(),
                         TableBuilder.Timestamp("last_updated")
                     );
-                    
+
                 }
 
                 int recordsWritten = 0;
@@ -208,7 +217,7 @@ namespace WaveDB
                 if (connection == null)
                 {
                     throw new Exception($"Database '{databaseName}' does not exist.");
-                    
+
                 }
 
                 var results = SQLite_Manager.ExecuteReader(connection, tableName, propertyNames.Count > 0 ? propertyNames.ToArray() : null!, where_clause, order_clause);
@@ -227,6 +236,155 @@ namespace WaveDB
             catch (Exception ex)
             {
                 return CreateErrorResponse($"Read operation failed: {ex.Message}");
+            }
+        }
+        private string HandleDeleteRequest(string databaseName, string tableName, JsonElement whereClause)
+        {
+            try
+            {
+                //var connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                // Production
+                var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                if (connection == null)
+                {
+                    throw new Exception($"Database '{databaseName}' does not exist.");
+                }
+
+                // Parse where clause and perform delete operation
+                string whereCondition = whereClause.GetString() ?? string.Empty;
+                SQLite_Manager.DeleteData(connection, tableName, whereCondition);
+
+                // Return JSON success response
+                return CreateSuccessResponse(new
+                {
+                    action = "DELETE",
+                    database = databaseName,
+                    table = tableName,
+                    timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC")
+                });
+            }
+            catch (Exception ex)
+            {
+                return CreateErrorResponse(ex.Message);
+            }
+        }
+        private string HandleCreateRequest(string databaseName, string tableName, JsonElement columns)
+        {
+            try
+            {
+                //var connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                // Production
+                var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                if (connection == null)
+                {
+                    Console.WriteLine("Database does not exist. Creating a new database...");
+                    //SQLite_Manager.CreateDatabase($"C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                    //connection = SQLite_Manager.OpenConnection($"C:\\Users\\wante\\WavePad\\WaveDB\\WaveDB\\{databaseName}.wvdb");
+                    // Production
+                    SQLite_Manager.CreateDatabase($"/var/lib/WaveOS/{databaseName}.wvdb");
+                    connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                }
+
+                // Build column definitions
+                var columnDefinitions = new List<string>();
+
+                // Always add ID column first
+                columnDefinitions.Add("id INTEGER PRIMARY KEY AUTOINCREMENT");
+
+                // Process columns array
+                if (columns.ValueKind == JsonValueKind.Array)
+                {
+                    foreach (var column in columns.EnumerateArray())
+                    {
+                        var columnType = column.GetProperty("type").GetString() ?? "TEXT";
+                        var columnName = column.GetProperty("name").GetString() ?? "column_name";
+                        var columnConstraints = column.GetProperty("constraints").EnumerateArray()
+                            .Select(c => c.GetString() ?? "")
+                            .ToList();
+
+                        // Build individual column definition
+                        string columnDef = $"{columnName} {columnType.ToUpper()}";
+                        if (columnConstraints.Any())
+                        {
+                            columnDef += $" {string.Join(" ", columnConstraints).ToUpper()}";
+                        }
+
+                        columnDefinitions.Add(columnDef);
+                    }
+                }
+                else
+                {
+                    // Handle single column (backward compatibility)
+                    var columnType = columns.GetProperty("type").GetString() ?? "TEXT";
+                    var columnName = columns.GetProperty("name").GetString() ?? "column_name";
+                    var columnConstraints = columns.GetProperty("constraints").EnumerateArray()
+                        .Select(c => c.GetString() ?? "")
+                        .ToList();
+
+                    string columnDef = $"{columnName} {columnType.ToUpper()}";
+                    if (columnConstraints.Any())
+                    {
+                        columnDef += $" {string.Join(" ", columnConstraints).ToUpper()}";
+                    }
+
+                    columnDefinitions.Add(columnDef);
+                }
+
+                // Create the final table query
+                string tableQuery = $"CREATE TABLE IF NOT EXISTS {tableName} ({string.Join(", ", columnDefinitions)})";
+                SQLite_Manager.ExecuteNonQuery(connection, tableQuery);
+
+                return CreateSuccessResponse(new
+                {
+                    action = "CREATE",
+                    database = databaseName,
+                    table = tableName,
+                    columns_created = columnDefinitions.Count - 1, // Exclude ID from count
+                    query = tableQuery,
+                    timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC")
+                });
+            }
+            catch (Exception ex)
+            {
+                return CreateErrorResponse($"Create operation failed: {ex.Message}");
+            }
+        }
+        private string HandleWriteRowRequest(string databaseName, string tableName, JsonElement writeData)
+        {
+            try
+            {
+                var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                if (connection == null)
+                {
+                    throw new Exception($"Database '{databaseName}' does not exist. Create the table first using CREATE action.");
+                }
+
+                // Build column names and values from JSON data
+                var columns = new List<string>();
+                var values = new List<object>();
+
+                foreach (var property in writeData.EnumerateObject())
+                {
+                    columns.Add(property.Name);
+                    values.Add(property.Value.ToString() ?? string.Empty);
+                }
+
+                // Insert the complete row
+                SQLite_Manager.InsertOrReplaceRowData(connection, tableName, columns.ToArray(), values.ToArray());
+
+                return CreateSuccessResponse(new
+                {
+                    action = "WRITE_ROW",
+                    database = databaseName,
+                    table = tableName,
+                    records_written = 1,
+                    columns_inserted = columns.Count,
+                    timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC")
+                });
+            }
+            catch (Exception ex)
+            {
+                return CreateErrorResponse($"Write row operation failed: {ex.Message}");
             }
         }
 

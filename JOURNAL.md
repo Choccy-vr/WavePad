@@ -193,3 +193,17 @@ created_at: "2025-05-22"
 - Right now I am updating my SQLite_Manager to support more complex tables right now it is just key-value pairs.
 
 **Total Time Spent: 6h**
+
+# June 27th: Weather Backend Finished
+
+- I finished the Weather Backend 
+
+- I finished improving the SQLite_Manager
+
+- Weather Backend also includes the Location Service
+
+- In the future this might be sepprated but as for now this works.
+
+- On to designing the Weather ui.
+
+**Total Time Spent: 4h**

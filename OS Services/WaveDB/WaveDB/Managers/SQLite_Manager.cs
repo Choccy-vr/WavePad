@@ -240,6 +240,36 @@ namespace WaveDB
                 Console.WriteLine($"SQLite Manager: Inserted: {property_name} = {property_value}");
             }
         }
+        public static void InsertOrReplaceRowData(SQLiteConnection connection, string tableName, string[] columns, object[] values)
+        {
+            if (columns.Length != values.Length)
+            {
+                throw new ArgumentException("Columns and values arrays must have the same length");
+            }
+
+            try
+            {
+                string columnsList = string.Join(", ", columns);
+                string valuesList = string.Join(", ", values.Select((_, i) => $"@param{i}"));
+
+                string query = $"INSERT OR REPLACE INTO {tableName} ({columnsList}) VALUES ({valuesList})";
+
+                using (var command = new SQLiteCommand(query, connection))
+                {
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        command.Parameters.AddWithValue($"@param{i}", values[i] ?? DBNull.Value);
+                    }
+
+                    command.ExecuteNonQuery();
+                    Console.WriteLine($"SQLite Manager: Inserted/Replaced row in {tableName}");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Failed to insert or replace row data: {ex.Message}");
+            }
+        }
         /// <summary>
         /// Deletes a property from the specified table based on the property name.
         /// If the property does not exist, it will not throw an error but will notify that the property was not found.
