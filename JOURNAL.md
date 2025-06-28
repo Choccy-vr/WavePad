@@ -207,3 +207,17 @@ created_at: "2025-05-22"
 - On to designing the Weather ui.
 
 **Total Time Spent: 4h**
+
+# June 28th: Weather UI design
+
+- I worked on designing the UI for the weather app
+
+- I only made it a basic mock up and going to finalize it in the flutter app
+
+- I just remembered I have to use pipes in this app hopefully dart supports named pipes.
+  
+  ![Main Page (1).png](C:\Users\wante\WavePad\Jounal%20Img\Main%20Page%20(1).png)
+  
+  ![Details (1).png](C:\Users\wante\WavePad\Jounal%20Img\Details%20(1).png)
+
+**Total Time Spent: 3.5h**
