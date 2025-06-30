@@ -221,3 +221,15 @@ created_at: "2025-05-22"
   ![Details (1).png](C:\Users\wante\WavePad\Jounal%20Img\Details%20(1).png)
 
 **Total Time Spent: 3.5h**
+
+# June 30th: Home Page in Flutter
+
+- I turned the home page into a flutter app
+
+- right now there is no functionality but I am going to add geting the weather once I am done the ui.
+
+- I added a Last Updated Time
+
+![Main-Page-Flutter.png](C:\Users\wante\WavePad\Jounal%20Img\Main-Page-Flutter.png)
+
+**Total Time Spent: 1.5h**
