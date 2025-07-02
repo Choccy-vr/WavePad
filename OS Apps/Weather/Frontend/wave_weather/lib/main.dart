@@ -3,6 +3,9 @@ import 'package:window_manager/window_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
+//pages
+import 'package:wave_weather/pages/details_today.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Must add this line.
@@ -43,7 +46,7 @@ class _MainAppState extends State<MainApp> {
         ),
         textTheme: GoogleFonts.interTextTheme(Theme.of(context).textTheme),
       ),
-      home: const Home_Page(),
+      home: const DetailsPage(),
     );
   }
 }

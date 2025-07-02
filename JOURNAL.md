@@ -233,3 +233,15 @@ created_at: "2025-05-22"
 ![Main-Page-Flutter.png](C:\Users\wante\WavePad\Jounal%20Img\Main-Page-Flutter.png)
 
 **Total Time Spent: 1.5h**
+
+# July 1st: Start of Month
+
+- I worked alot on the detail pages 
+
+- I worked for around 8.5hrs I am soooooo done
+
+- I got navigation to work
+
+- FInished the 3 pages: Today, Tommorow, Week
+
+**Total Time Spent: 9h**

@@ -48,7 +48,7 @@ namespace WeatherService
             {
                 string url = $"{_baseUrl}/forecast?" +
                            $"latitude={latitude}&longitude={longitude}" +
-                           "&daily=weather_code,temperature_2m_max,temperature_2m_min" + 
+                           "&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,wind_speed_10m_max" + 
                            "&timezone=America%2FNew_York&wind_speed_unit=mph&temperature_unit=fahrenheit&precipitation_unit=inch";
 
                 string response = await _httpClient.GetStringAsync(url);
@@ -58,6 +58,8 @@ namespace WeatherService
                 var times = daily.GetProperty("time").EnumerateArray().ToArray();
                 var maxTemps = daily.GetProperty("temperature_2m_max").EnumerateArray().ToArray();
                 var minTemps = daily.GetProperty("temperature_2m_min").EnumerateArray().ToArray();
+                var uvIndexes = daily.GetProperty("uv_index_max").EnumerateArray().ToArray();
+                var windSpeeds = daily.GetProperty("wind_speed_10m_max").EnumerateArray().ToArray();
                 var weatherCodes = daily.GetProperty("weather_code").EnumerateArray().ToArray();
                 var forecasts = new List<DailyWeatherData>();
                 
@@ -193,6 +195,8 @@ namespace WeatherService
         public DateTime Date { get; set; }
         public double MaxTemperature { get; set; }
         public double MinTemperature { get; set; }
+        public double UVIndexMax { get; set; }
+        public double WindSpeedMax { get; set; }
         public int WeatherCode { get; set; }
         public string Description { get; set; } = string.Empty;
     }
