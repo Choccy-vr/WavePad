@@ -196,32 +196,35 @@ class _DetailsPageState extends State<DetailsPage> {
               color: Theme.of(context).colorScheme.outline,
               thickness: .5,
             ),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    for (int i = 0; i < HorlyTime.length; i++)
-                      Column(
-                        children: [
-                          Icon(
-                            HorlyConditionIcons[i],
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 48,
-                          ),
-                          Text(
-                            HorlyTime[i],
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurfaceVariant,
-                                ),
-                          ),
-                        ],
-                      ),
-                  ],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 25),
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      for (int i = 0; i < HorlyTime.length; i++)
+                        Column(
+                          children: [
+                            Icon(
+                              HorlyConditionIcons[i],
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 48,
+                            ),
+                            Text(
+                              HorlyTime[i],
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurfaceVariant,
+                                  ),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
                 ),
               ),
             ),
