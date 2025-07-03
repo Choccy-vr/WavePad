@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:wave_weather/Weather-Details.dart';
+import 'package:wave_weather/Weather.dart';
+import 'package:wave_weather/widgets/Weather-Details.dart';
 import 'details_tom.dart';
 import 'details_week.dart';
+import 'package:wave_weather/WeatherData.dart';
 
 class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key});
@@ -13,21 +15,33 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   int selectedIndex = 0;
-  String Tempature = '??°';
-  String Humidity = '??%';
-  String Precipitation = '? Inch';
-  String Location = 'Unkown Location';
-  String Condition = 'Condition';
-  IconData ConditionIcon = Symbols.partly_cloudy_day_rounded;
-  List<String> HorlyTime = ['??:?? AM', '??:?? PM', '??:?? AM', '??:?? PM'];
-  List<IconData> HorlyConditionIcons = [
-    Symbols.partly_cloudy_day_rounded,
-    Symbols.wb_sunny_rounded,
-    Symbols.cloud_rounded,
-    Symbols.rainy_rounded,
-  ];
-  String UVIndex = '??';
-  String WindSpeed = '?? Mph';
+  String Tempature = (WeatherData.currentWeather != null)
+      ? '${WeatherData.currentWeather!.tempature}°'
+      : '??°';
+  String Humidity = (WeatherData.currentWeather != null)
+      ? '${WeatherData.currentWeather!.humidity}%'
+      : '??%';
+  String Precipitation = (WeatherData.currentWeather != null)
+      ? '${WeatherData.currentWeather!.precipitation} Inch'
+      : '? Inch';
+  String Location = (WeatherData.locationData != null)
+      ? '${WeatherData.locationData!.City}, ${WeatherData.locationData!.Region}'
+      : 'Unknown Location';
+  String Condition = (WeatherData.currentWeather != null)
+      ? WeatherData.currentWeather!.weatherDescription
+      : 'Unknown Condition';
+  WeatherIcon ConditionIcon = WeatherData.GetWeatherIcon(
+    WeatherData.currentWeather?.weatherCode ?? 100,
+    isDay: WeatherData.currentWeather?.isDay ?? true,
+  );
+  List<HourlyWeatherData> HourlyTime = WeatherData.hourlyWeather;
+  late List<WeatherIcon> HourlyConditionIcons;
+  String UVIndex = (WeatherData.currentWeather != null)
+      ? '${WeatherData.currentWeather!.uvIndex}'
+      : '??';
+  String WindSpeed = (WeatherData.currentWeather != null)
+      ? '${WeatherData.currentWeather!.windSpeed} Mph'
+      : '?? Mph';
   void NavigateToPage(int index) {
     switch (index) {
       case 0:
@@ -70,6 +84,15 @@ class _DetailsPageState extends State<DetailsPage> {
           ),
         );
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    HourlyConditionIcons = [
+      for (var data in HourlyTime)
+        WeatherData.GetWeatherIcon(data.weatherCode, isDay: data.isDay),
+    ];
   }
 
   @override
@@ -126,7 +149,11 @@ class _DetailsPageState extends State<DetailsPage> {
                         SizedBox(width: 30),
                         Row(
                           children: [
-                            Icon(ConditionIcon, color: Colors.yellow, size: 42),
+                            Icon(
+                              ConditionIcon.icon,
+                              color: ConditionIcon.color,
+                              size: 42,
+                            ),
                             SizedBox(width: 10),
                             Text(
                               Condition,
@@ -204,16 +231,16 @@ class _DetailsPageState extends State<DetailsPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      for (int i = 0; i < HorlyTime.length; i++)
+                      for (int i = 0; i < HourlyTime.length; i++)
                         Column(
                           children: [
                             Icon(
-                              HorlyConditionIcons[i],
-                              color: Theme.of(context).colorScheme.primary,
+                              HourlyConditionIcons[i].icon,
+                              color: HourlyConditionIcons[i].color,
                               size: 48,
                             ),
                             Text(
-                              HorlyTime[i],
+                              HourlyTime[i].time,
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(
                                     color: Theme.of(

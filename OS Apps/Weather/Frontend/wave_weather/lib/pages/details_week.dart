@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:wave_weather/Weather-Details.dart';
+import 'package:wave_weather/Weather.dart';
+import 'package:wave_weather/widgets/Weather-Details.dart';
 import 'package:wave_weather/pages/details_tom.dart';
+import 'package:wave_weather/WeatherData.dart';
 import 'details_today.dart';
 import 'details_tom.dart';
 
@@ -14,35 +16,27 @@ class DetailsWeekPage extends StatefulWidget {
 
 class _DetailsWeekPageState extends State<DetailsWeekPage> {
   int selectedIndex = 2;
-  String Tempature = '??°';
-  String Location = 'Unkown Location';
-  String Current_Condition = 'Condition';
-  IconData Current_ConditionIcon = Symbols.partly_cloudy_day_rounded;
-  List<String> Days = ['??/??', '??/??', '??/??', '??/??', '??/??'];
-  List<String> Forecasted_Condtion = [
-    'Unknown Condition',
-    'Unknown Condition',
-    'Unknown Condition',
-    'Unknown Condition',
-    'Unknown Condition',
-  ];
-  List<IconData> Forecasted_ConditionIcon = [
-    Symbols.partly_cloudy_day_rounded,
-    Symbols.wb_sunny_rounded,
-    Symbols.cloud_rounded,
-    Symbols.rainy_rounded,
-    Symbols.snowing_rounded,
-  ];
-  List<String> Forecasted_Max_Temperature = ['??°', '??°', '??°', '??°', '??°'];
-  List<String> Forecasted_Min_Temperature = ['??°', '??°', '??°', '??°', '??°'];
-  List<String> Forecasted_Max_UVIndex = ['??', '??', '??', '??', '??'];
-  List<String> Forecasted_Max_WindSpeed = [
-    '?? Mph',
-    '?? Mph',
-    '?? Mph',
-    '?? Mph',
-    '?? Mph',
-  ];
+  String Tempature = (WeatherData.currentWeather != null)
+      ? '${WeatherData.currentWeather!.tempature}°'
+      : '??°';
+  String Location = (WeatherData.locationData != null)
+      ? '${WeatherData.locationData!.City}, ${WeatherData.locationData!.Region}'
+      : 'Unknown Location';
+  String Current_Condition = (WeatherData.currentWeather != null)
+      ? WeatherData.currentWeather!.weatherDescription
+      : 'Unknown Condition';
+  WeatherIcon Current_ConditionIcon = WeatherData.GetWeatherIcon(
+    WeatherData.currentWeather?.weatherCode ?? 100,
+    isDay: WeatherData.currentWeather?.isDay ?? true,
+  );
+  List<DailyWeatherData> Days = WeatherData.dailyWeather;
+  List<String> Date = [];
+  List<String> Forecasted_Condtion = [];
+  List<WeatherIcon> Forecasted_ConditionIcon = [];
+  List<String> Forecasted_Max_Temperature = [];
+  List<String> Forecasted_Min_Temperature = [];
+  List<String> Forecasted_Max_UVIndex = [];
+  List<String> Forecasted_Max_WindSpeed = [];
 
   void NavigateToPage(int index) {
     switch (index) {
@@ -85,6 +79,25 @@ class _DetailsWeekPageState extends State<DetailsWeekPage> {
             },
           ),
         );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the weather data
+    if (Days.isNotEmpty) {
+      for (var day in Days) {
+        Date.add(day.date);
+        Forecasted_Condtion.add(day.weatherDescription);
+        Forecasted_ConditionIcon.add(
+          WeatherData.GetWeatherIcon(day.weatherCode),
+        );
+        Forecasted_Max_Temperature.add('${day.maxTemperature}°');
+        Forecasted_Min_Temperature.add('${day.minTemperature}°');
+        Forecasted_Max_UVIndex.add('${day.uvIndexMax}');
+        Forecasted_Max_WindSpeed.add('${day.windSpeedMax} mph');
+      }
     }
   }
 
@@ -143,8 +156,8 @@ class _DetailsWeekPageState extends State<DetailsWeekPage> {
                         Row(
                           children: [
                             Icon(
-                              Current_ConditionIcon,
-                              color: Colors.yellow,
+                              Current_ConditionIcon.icon,
+                              color: Current_ConditionIcon.color,
                               size: 42,
                             ),
                             SizedBox(width: 10),
@@ -230,7 +243,7 @@ class _DetailsWeekPageState extends State<DetailsWeekPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                              Days[i],
+                              Date[i],
                               style: Theme.of(context).textTheme.titleMedium
                                   ?.copyWith(
                                     color: Theme.of(
@@ -239,8 +252,8 @@ class _DetailsWeekPageState extends State<DetailsWeekPage> {
                                   ),
                             ),
                             Icon(
-                              Forecasted_ConditionIcon[i],
-                              color: Theme.of(context).colorScheme.primary,
+                              Forecasted_ConditionIcon[i].icon,
+                              color: Forecasted_ConditionIcon[i].color,
                               size: 30,
                             ),
                             Text(

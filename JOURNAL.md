@@ -245,3 +245,23 @@ created_at: "2025-05-22"
 - FInished the 3 pages: Today, Tommorow, Week
 
 **Total Time Spent: 9h**
+
+# July 3rd: Finished Weather
+
+- I am finally DONE with the weather app
+
+- I was so over that stupid app 
+
+- but it is done and I am pretty happy with the result
+
+- What the final product looks like is the picture from July 30th because I didn't really do alot of UI changes just made it actually worked
+
+- I also don't want to get doxxed because location works too!
+
+- I also made some changes to the SQLite_Manager for reading Row data
+
+- I am now moving on to a macro app (like a Stream Deck)
+
+- Also this is today and yesterday. Forgot to journal
+
+**Total Time Spent: 8h**

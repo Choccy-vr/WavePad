@@ -82,6 +82,8 @@ namespace WaveDB
                         var order = requestObj.TryGetProperty("order", out var orderByElement) ? orderByElement : (JsonElement?)null;
 
                         return HandleReadRequest(databaseName, tableName, readItems, where, order);
+                    case "READ_ROWS":
+                        return HandleReadRowsRequest(databaseName, tableName);
                     case "DELETE":
                         var whereClause = requestObj.TryGetProperty("where", out var whereElementDelete) ? whereElementDelete : new JsonElement();
                         return HandleDeleteRequest(databaseName, tableName, whereClause);
@@ -385,6 +387,38 @@ namespace WaveDB
             catch (Exception ex)
             {
                 return CreateErrorResponse($"Write row operation failed: {ex.Message}");
+            }
+        }
+        private string HandleReadRowsRequest(string databaseName, string tableName)
+        {
+            try
+            {
+                var connection = SQLite_Manager.OpenConnection($"/var/lib/WaveOS/{databaseName}.wvdb");
+                if (connection == null)
+                {
+                    throw new Exception($"Database '{databaseName}' does not exist.");
+                }
+
+                // Read all rows
+                var rows = SQLite_Manager.GetAllRows(connection, tableName);
+                if (rows == null || rows.Count == 0)
+                {
+                    return CreateErrorResponse($"No rows found in table '{tableName}' in database '{databaseName}'.");
+                }
+
+                return CreateSuccessResponse(new
+                {
+                    action = "READ_ROWS",
+                    database = databaseName,
+                    table = tableName,
+                    rows_read = rows.Count,
+                    row_data = rows,
+                    timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss UTC")
+                });
+            }
+            catch (Exception ex)
+            {
+                return CreateErrorResponse($"Read row operation failed: {ex.Message}");
             }
         }
 

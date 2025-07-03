@@ -146,6 +146,37 @@ namespace WaveDB
             }
             return results;
         }
+        public static List<Dictionary<string, object?>> GetAllRows(
+    SQLiteConnection connection,
+    string tableName)
+        {
+            if (connection == null)
+                throw new ArgumentNullException(nameof(connection));
+            if (tableName == null)
+                throw new ArgumentNullException(nameof(tableName));
+            if (!IsValidName(tableName))
+                throw new ArgumentException("Invalid table name.");
+
+            string query = $"SELECT * FROM {tableName}";
+            var results = new List<Dictionary<string, object?>>();
+
+            using (var command = new SQLiteCommand(query, connection))
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    var row = new Dictionary<string, object?>();
+                    for (int i = 0; i < reader.FieldCount; i++)
+                    {
+                        string col = reader.GetName(i);
+                        object? val = reader.IsDBNull(i) ? null : reader.GetValue(i);
+                        row[col] = val;
+                    }
+                    results.Add(row);
+                }
+            }
+            return results;
+        }
         /// <summary>
         /// Retrieves a single property value from the specified table based on the property name.
         /// If the property is not found, it returns "Not Found".

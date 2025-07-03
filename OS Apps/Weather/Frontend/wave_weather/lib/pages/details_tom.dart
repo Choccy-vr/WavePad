@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:wave_weather/Weather-Details.dart';
+import 'package:wave_weather/Weather.dart';
+import 'package:wave_weather/WeatherData.dart';
+import 'package:wave_weather/widgets/Weather-Details.dart';
 import 'details_today.dart';
 import 'details_week.dart';
 
@@ -13,18 +15,43 @@ class DetailsTomPage extends StatefulWidget {
 
 class _DetailsTomPageState extends State<DetailsTomPage> {
   int selectedIndex = 1;
-  String Tempature = '??°';
-  String Location = 'Unkown Location';
-  String Current_Condition = 'Condition';
-  IconData Current_ConditionIcon = Symbols.partly_cloudy_day_rounded;
-  String Forecasted_Condtion = 'Unkown Condition';
-  IconData Forecasted_ConditionIcon = Symbols.partly_cloudy_day_rounded;
-  String Forecasted_Precipitation_Prob = '??%';
-  String Forecasted_MaxTemp = '??°';
-  String Forecasted_LowTemp = '??°';
-  String Forecasted_Humidity = '??%';
-  String Forecasted_UVIndex = '??';
-  String Forecasted_WindSpeed = '?? Mph';
+  String Tempature = (WeatherData.currentWeather != null)
+      ? '${WeatherData.currentWeather!.tempature}°'
+      : '??°';
+  String Location = (WeatherData.locationData != null)
+      ? '${WeatherData.locationData!.City}, ${WeatherData.locationData!.Region}'
+      : 'Unknown Location';
+  String Current_Condition = (WeatherData.currentWeather != null)
+      ? WeatherData.currentWeather!.weatherDescription
+      : 'Unknown Condition';
+  WeatherIcon Current_ConditionIcon = WeatherData.GetWeatherIcon(
+    WeatherData.currentWeather?.weatherCode ?? 100,
+    isDay: WeatherData.currentWeather?.isDay ?? true,
+  );
+  String Forecasted_Condtion = (WeatherData.dailyWeather.isNotEmpty)
+      ? WeatherData.dailyWeather[1].weatherDescription
+      : 'Unknown Condition';
+  WeatherIcon Forecasted_ConditionIcon = WeatherData.GetWeatherIcon(
+    WeatherData.dailyWeather.isNotEmpty
+        ? WeatherData.dailyWeather[1].weatherCode
+        : 100,
+    isDay: WeatherData.currentWeather?.isDay ?? true,
+  );
+  String Forecasted_MaxTemp = (WeatherData.dailyWeather.isNotEmpty)
+      ? '${WeatherData.dailyWeather[1].maxTemperature}°'
+      : '??°';
+  String Forecasted_LowTemp = (WeatherData.dailyWeather.isNotEmpty)
+      ? '${WeatherData.dailyWeather[1].minTemperature}°'
+      : '??°';
+  String Forecasted_UVIndex = (WeatherData.dailyWeather.isNotEmpty)
+      ? '${WeatherData.dailyWeather[1].uvIndexMax}'
+      : '??';
+  String Forecasted_WindSpeed = (WeatherData.dailyWeather.isNotEmpty)
+      ? '${WeatherData.dailyWeather[1].windSpeedMax} Mph'
+      : '?? Mph';
+  //Hourly Variables
+  String Forecasted_Precipitation_Prob = '';
+  String Forecasted_Humidity = '';
   void NavigateToPage(int index) {
     switch (index) {
       case 0:
@@ -66,6 +93,44 @@ class _DetailsTomPageState extends State<DetailsTomPage> {
             },
           ),
         );
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    DateTime now = DateTime.now();
+    DateTime tomorrow = DateTime(now.year, now.month, now.day + 1);
+
+    // Filter all hourly weather for tomorrow
+    List<HourlyWeatherData> tomorrowHours = WeatherData.hourlyWeather.where((
+      hour,
+    ) {
+      // Parse the hour's time string to DateTime
+      DateTime hourTime = DateTime.parse(hour.time);
+      // Check if year, month, and day match tomorrow
+      return hourTime.year == tomorrow.year &&
+          hourTime.month == tomorrow.month &&
+          hourTime.day == tomorrow.day;
+    }).toList();
+    // Initialize the weather data
+    if (tomorrowHours.isNotEmpty) {
+      var _precip_chance = 0;
+      // Calculate average humidity
+      double avgHumidity =
+          tomorrowHours.map((hour) => hour.humidity).reduce((a, b) => a + b) /
+          tomorrowHours.length;
+
+      // If you want it as a string with percent:
+      Forecasted_Humidity = '${avgHumidity.round()}%';
+      for (var hour in tomorrowHours) {
+        if (hour.precipitation_probability > _precip_chance) {
+          _precip_chance = hour.precipitation_probability;
+        }
+      }
+    } else {
+      Forecasted_Precipitation_Prob = '??%';
+      Forecasted_Humidity = '??%';
     }
   }
 
@@ -124,8 +189,8 @@ class _DetailsTomPageState extends State<DetailsTomPage> {
                         Row(
                           children: [
                             Icon(
-                              Current_ConditionIcon,
-                              color: Colors.yellow,
+                              Current_ConditionIcon.icon,
+                              color: Current_ConditionIcon.color,
                               size: 42,
                             ),
                             SizedBox(width: 10),
@@ -204,8 +269,8 @@ class _DetailsTomPageState extends State<DetailsTomPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Icon(
-                        Forecasted_ConditionIcon,
-                        color: Colors.yellow,
+                        Forecasted_ConditionIcon.icon,
+                        color: Forecasted_ConditionIcon.color,
                         size: 86,
                       ),
                       Text(
