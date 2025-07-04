@@ -265,3 +265,29 @@ created_at: "2025-05-22"
 - Also this is today and yesterday. Forgot to journal
 
 **Total Time Spent: 8h**
+
+# July 4th: Happy 4th of July
+
+- I started work on the macro pad app 
+
+- I got the UI done 
+
+- but that is where the good news ends
+
+- I thought it would be pretty simple to send HID commands to a pc
+
+- best case just a dart package worse case maybe a platform channel with a pretty easy HID library.
+
+- NO
+
+- I have been researching turns out I need to basically interact with the raw USB interface
+
+- I am just going to keep searching for something that will help me 
+
+
+
+![Screenshot 2025-07-04 151632.png](C:\Users\wante\WavePad\Jounal%20Img\Screenshot%202025-07-04%20151632.png)
+
+![Screenshot 2025-07-04 151949.png](C:\Users\wante\WavePad\Jounal%20Img\Screenshot%202025-07-04%20151949.png)
+
+**Total Time Spent: 4h**
