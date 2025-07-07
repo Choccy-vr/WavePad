@@ -291,3 +291,19 @@ created_at: "2025-05-22"
 ![Screenshot 2025-07-04 151949.png](C:\Users\wante\WavePad\Jounal%20Img\Screenshot%202025-07-04%20151949.png)
 
 **Total Time Spent: 4h**
+
+# July 6th: OS Modifications & Macro-Pad App
+
+- I made some modifications to the os 
+
+- I added logic for first boot and stuff like that
+
+- I also added the usb functionailty
+
+- I finished the Macro-Pad app and it now functions exactly like a macropad
+
+- I made it able to detect if you are connected to a pc not just a wall outlet and throws an error if not connceted to a pc
+
+- I am now going to modify a few OS things and make a OOBE and v1 (v0.0.1) of Wave OS is complete!
+
+**Total Time Spent: 5h**

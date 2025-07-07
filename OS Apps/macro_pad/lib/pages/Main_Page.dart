@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:macro_pad/HIDController.dart';
+import 'package:macro_pad/Keys.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class Macro {
@@ -29,8 +31,11 @@ class Main_Page extends StatelessWidget {
                     width: 135,
                     height: 135,
                     child: FloatingActionButton(
-                      onPressed: () {
-                        // Add your action here
+                      onPressed: () async {
+                        await HIDController.sendKeyPress(
+                          ModifierKey.leftCtrl.value,
+                          Key_Definition.c.value,
+                        );
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -54,8 +59,11 @@ class Main_Page extends StatelessWidget {
                     width: 135,
                     height: 135,
                     child: FloatingActionButton(
-                      onPressed: () {
-                        // Add your action here
+                      onPressed: () async {
+                        await HIDController.sendKeyPress(
+                          ModifierKey.leftCtrl.value,
+                          Key_Definition.x.value,
+                        );
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -79,8 +87,11 @@ class Main_Page extends StatelessWidget {
                     width: 135,
                     height: 135,
                     child: FloatingActionButton(
-                      onPressed: () {
-                        // Add your action here
+                      onPressed: () async {
+                        await HIDController.sendKeyPress(
+                          ModifierKey.leftCtrl.value,
+                          Key_Definition.v.value,
+                        );
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -109,8 +120,10 @@ class Main_Page extends StatelessWidget {
                     width: 135,
                     height: 135,
                     child: FloatingActionButton(
-                      onPressed: () {
-                        // Add your action here
+                      onPressed: () async {
+                        await HIDController.sendMediaKey(
+                          MediaKey.volumeDown.value,
+                        );
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -134,8 +147,10 @@ class Main_Page extends StatelessWidget {
                     width: 135,
                     height: 135,
                     child: FloatingActionButton(
-                      onPressed: () {
-                        // Add your action here
+                      onPressed: () async {
+                        await HIDController.sendMediaKey(
+                          MediaKey.playPause.value,
+                        );
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -159,8 +174,10 @@ class Main_Page extends StatelessWidget {
                     width: 135,
                     height: 135,
                     child: FloatingActionButton(
-                      onPressed: () {
-                        // Add your action here
+                      onPressed: () async {
+                        await HIDController.sendMediaKey(
+                          MediaKey.volumeUp.value,
+                        );
                       },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

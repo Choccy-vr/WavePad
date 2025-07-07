@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  quick_usb
   screen_retriever_linux
   window_manager
 )
