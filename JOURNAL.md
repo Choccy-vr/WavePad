@@ -284,8 +284,6 @@ created_at: "2025-05-22"
 
 - I am just going to keep searching for something that will help me 
 
-
-
 ![Screenshot 2025-07-04 151632.png](C:\Users\wante\WavePad\Jounal%20Img\Screenshot%202025-07-04%20151632.png)
 
 ![Screenshot 2025-07-04 151949.png](C:\Users\wante\WavePad\Jounal%20Img\Screenshot%202025-07-04%20151949.png)
@@ -307,3 +305,11 @@ created_at: "2025-05-22"
 - I am now going to modify a few OS things and make a OOBE and v1 (v0.0.1) of Wave OS is complete!
 
 **Total Time Spent: 5h**
+
+# July 7th: OOBE
+
+- I started work on the OOBE I got a Figma mockup made on my SoM devlog
+
+- I am working on the actual app and will report back here for more info.
+
+**Total Time Spent: 5hrs**

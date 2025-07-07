@@ -1,0 +1,5 @@
+package com.example.wave_setup
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity : FlutterActivity()
