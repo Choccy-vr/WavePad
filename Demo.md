@@ -55,7 +55,11 @@ I can only put images and videos of all the user apps, try to just merge them in
 
 An OOBE that sets up your WavePad and teaches you how to use it
 
-![Setup Video](https://github.com/Choccy-vr/WavePad/raw/refs/heads/main/Jounal%20Img/Setup.mp4)
+
+
+https://github.com/user-attachments/assets/51294527-9858-40f4-9589-a049399a5ba1
+
+
 
 ![Setup-Wifi.png](https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Setup-Wifi.png)
 
@@ -73,7 +77,11 @@ The main Weather frontend app. Weather is split into two backends, and the front
 
 ![Weather-Details.png](https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Weather-Details.png)
 
-![Weather-Vid](https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Details-Transition.mp4)
+
+
+https://github.com/user-attachments/assets/21fdbf74-21af-47ca-adb4-2b918eda360f
+
+
 
 ## Macro Pad
 
