@@ -29,7 +29,7 @@ fi
 if [ ! -f "$OOBE_FLAG" ]; then
     echo "=== STARTING OOBE ==="
     # Out of box experience
-    systemctl start oobe.service
+    systemctl start OOBE.service
 else
     echo "=== STARTING NORMAL OPERATION ==="
     # Start normal opperation

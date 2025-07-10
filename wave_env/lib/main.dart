@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:wave_env/OpenApp.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/symbols.dart';
-
 // Import diffrent scripts
 import 'widgets/system_toolbar.dart';
 import 'apps.dart'; // Import apps page
 import 'widgets/clock_widget.dart';
+import 'Weather.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,44 +54,65 @@ class MyApp extends StatelessWidget {
 class Home_Page extends StatefulWidget {
   const Home_Page({super.key});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   @override
   State<Home_Page> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<Home_Page> {
+  final FocusNode _focusNode = FocusNode();
+  late CurrentWeatherData WeatherData;
+  late DailyWeatherData DailyWeather;
+  late LocationData Location;
+
+  void _handleKey(KeyEvent event, var context) {
+    if (event is KeyDownEvent &&
+        event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return AppsPage();
+          },
+        ),
+      );
+    }
+  }
+
   void _navigateToApps() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) {
-          return AppsPage();
-        },
-      ),
+      MaterialPageRoute(builder: (context) => AppsPage()),
     );
   }
 
   @override
+  void initState() {
+    super.initState();
+    GetCurrentWeather().then((weather) {
+      setState(() {
+        WeatherData = weather;
+      });
+    });
+    GetDayWeather().then((dailyWeather) {
+      setState(() {
+        DailyWeather = dailyWeather;
+      });
+    });
+    GetLocationData().then((location) {
+      setState(() {
+        Location = location;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return KeyboardListener(
-      focusNode: FocusNode(),
+    return Focus(
       autofocus: true,
-      onKeyEvent: (KeyEvent event) {
-        // Check if key is pressed (not released)
-        if (event is KeyDownEvent) {
-          //Switch to actual gesture
-          if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
-            _navigateToApps();
-          }
-        }
+      focusNode: _focusNode,
+      onKeyEvent: (FocusNode node, KeyEvent event) {
+        _handleKey(event, context);
+        return KeyEventResult.ignored;
       },
       child: Scaffold(
         body: Stack(
@@ -137,7 +159,7 @@ class _HomePageState extends State<Home_Page> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(16),
                             onTap: () {
-                              // action here
+                              startApp('~/Applications/wave_weather');
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(10.0),
@@ -157,7 +179,7 @@ class _HomePageState extends State<Home_Page> {
                                         ),
                                         const SizedBox(width: 10),
                                         Text(
-                                          '78°',
+                                          '${WeatherData.tempature}°',
                                           style: Theme.of(context)
                                               .textTheme
                                               .displaySmall
@@ -171,7 +193,7 @@ class _HomePageState extends State<Home_Page> {
                                         Column(
                                           children: [
                                             Text(
-                                              'West Palm Beach',
+                                              Location.City,
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleMedium
@@ -182,7 +204,7 @@ class _HomePageState extends State<Home_Page> {
                                                   ),
                                             ),
                                             Text(
-                                              'H:90° L:70°',
+                                              'H:${DailyWeather.maxTemperature}° L:${DailyWeather.minTemperature}°',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .bodyMedium
@@ -204,36 +226,12 @@ class _HomePageState extends State<Home_Page> {
                         ),
                       ),
                       const ClockWidget(),
-                      /*Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            DateFormat('hh:mm').format(currentDate),
-                            style: Theme.of(context).textTheme.displayLarge!
-                                .copyWith(
-                                  //fontWeight: FontWeight.bold,
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                  fontSize: 85,
-                                ),
-                          ),
-                          Text(
-                            DateFormat('MMMM d').format(currentDate),
-                            style: Theme.of(context).textTheme.displaySmall!
-                                .copyWith(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.onSurface,
-                                ),
-                          ),
-                        ],
-                      ),*/
                     ],
                   ),
                 ),
                 //Smart Stack
-                Expanded(
+                //Not yet implemented
+                /*Expanded(
                   child: Center(
                     child: Container(
                       width: 300, // adjust as needed
@@ -292,7 +290,7 @@ class _HomePageState extends State<Home_Page> {
                       ),
                     ),
                   ),
-                ),
+                ),*/
                 // Shortcuts
                 Padding(
                   padding: const EdgeInsets.all(25.0),

@@ -1,15 +1,19 @@
 {
 	"folders": [
 		{
+			"name": "wave_env",
 			"path": "wave_env"
 		},
 		{
+			"name": "WaveOS",
 			"path": "WaveOS"
 		},
 		{
+			"name": "OS Services",
 			"path": "OS Services"
 		},
 		{
+			"name": "OS Apps",
 			"path": "OS Apps"
 		}
 	],

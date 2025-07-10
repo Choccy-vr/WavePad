@@ -62,6 +62,7 @@ class LanguagePage extends StatelessWidget {
                         leading: Icon(Symbols.language_rounded, size: 32),
                         title: Text('English'),
                         onTap: () {
+                          // This should have code to actually set the language but since I am only supporting one language for now, it is not implemented.
                           Navigator.push(
                             context,
                             SharedAxisPageRoute(

@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'widgets/system_toolbar.dart';
+import 'OpenApp.dart';
 
 class DirectoryScanner {
   // Stream-based async scanning
@@ -34,6 +34,14 @@ class AppsPage extends StatefulWidget {
 class _AppsPageState extends State<AppsPage> {
   List<FileSystemEntity> _entities = [];
   bool _isScanning = false;
+  final FocusNode _focusNode = FocusNode();
+
+  void _handleKey(KeyEvent event, var context) {
+    if (event is KeyDownEvent &&
+        event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+      Navigator.pop(context);
+    }
+  }
 
   Future<void> _scanDirectoryAsync() async {
     setState(() {
@@ -54,27 +62,6 @@ class _AppsPageState extends State<AppsPage> {
     setState(() => _isScanning = false);
   }
 
-  Future<void> startApp(String appPath) async {
-    try {
-      final process = await Process.start(appPath, []);
-
-      // Listen to output
-      process.stdout.transform(utf8.decoder).listen((data) {
-        print('App output: $data');
-      });
-
-      process.stderr.transform(utf8.decoder).listen((data) {
-        print('App error: $data');
-      });
-
-      // Wait for process to finish
-      final exitCode = await process.exitCode;
-      print('App exited with code: $exitCode');
-    } catch (e) {
-      print('Failed to start app: $e');
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -83,15 +70,12 @@ class _AppsPageState extends State<AppsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return KeyboardListener(
-      focusNode: FocusNode(),
+    return Focus(
       autofocus: true,
-      onKeyEvent: (KeyEvent event) {
-        if (event is KeyDownEvent) {
-          if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
-            Navigator.pop(context); // Go back with right arrow
-          }
-        }
+      focusNode: _focusNode,
+      onKeyEvent: (FocusNode node, KeyEvent event) {
+        _handleKey(event, context);
+        return KeyEventResult.ignored;
       },
       child: Scaffold(
         body: Center(

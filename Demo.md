@@ -38,6 +38,8 @@ The PCB/Mainboard is a CM4 carrier board with a DSI port and CSI port for the di
 
 Put PCB and Schematic pics here
 
+# 
+
 # WaveOS
 
 I can only put images and videos of all the user apps try to just merge them in your mind
@@ -46,11 +48,15 @@ I can only put images and videos of all the user apps try to just merge them in 
 
 A OOBE that sets up your WavePad and teaches you how to use it
 
-Setup pics here
+Setup vid here
+
+![Setup-Wifi.png](C:\Users\wante\WavePad\Jounal%20Img\Setup-Wifi.png)
 
 ## Wave Env
 
 The main app/enviroment of WaveOS 
+
+![MainPage.png](C:\Users\wante\WavePad\Jounal%20Img\MainPage.png)
 
 Wave Env pics here
 
@@ -58,13 +64,19 @@ Wave Env pics here
 
 The main Weather frontend app. Weather is split into two backend and frontend backend never closes and shares the weather data to all apps so any app can use weather. The frontend is a normal app that takes the weather data and displays it to the user
 
-Weather app pics here
+![Main-Page-Weather.png](C:\Users\wante\WavePad\Jounal%20Img\Main-Page-Weather.png)
+
+![Weather-Details.png](C:\Users\wante\WavePad\Jounal%20Img\Weather-Details.png)
+
+Weather app vid here
 
 ## Macro Pad
 
 This app uses the HID feature of WavePad by emulating a macropad when connected to a pc. In the future you will be able to change the macros
 
-Macro Pad app pics here
+![macro_pad.png](C:\Users\wante\WavePad\Jounal%20Img\macro_pad.png)
+
+![Macro-NoUSB.png](C:\Users\wante\WavePad\Jounal%20Img\Macro-NoUSB.png)
 
 # Conclusion
 

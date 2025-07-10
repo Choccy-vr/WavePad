@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:video_player_media_kit/video_player_media_kit.dart';
 // pages
 import 'package:wave_setup/pages/Start_Page.dart';
 
@@ -20,6 +21,11 @@ void main() async {
     await windowManager.show();
     await windowManager.focus();
   });
+  VideoPlayerMediaKit.ensureInitialized(
+    windows:
+        true, // default: false    -    dependency: media_kit_libs_windows_video
+    linux: true, // default: false    -    dependency: media_kit_libs_linux
+  );
   runApp(const MainApp());
 }
 

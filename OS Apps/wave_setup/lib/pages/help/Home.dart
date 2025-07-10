@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
-import '/animations/Shared_Axis.dart';
-import 'package:animations/animations.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import '../Widgets/Video_Loop.dart';
+import 'dart:io';
 
-class Direction_Page extends StatelessWidget {
-  const Direction_Page({Key? key}) : super(key: key);
+class Home_Page extends StatefulWidget {
+  const Home_Page({Key? key}) : super(key: key);
+
+  @override
+  State<Home_Page> createState() => _Home_PageState();
+}
+
+class _Home_PageState extends State<Home_Page> {
+  @override
+  void dispose() {
+    // Mark OOBE as completed by writing to a file
+    final file = File('/var/lib/oobe-complete');
+    file.writeAsStringSync('', mode: FileMode.append);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,12 +64,16 @@ class Direction_Page extends StatelessWidget {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                  left: 16.0,
+                  right: 16.0,
+                  top: 16.0,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'WaveOS can be navigated by simply waving your hand.',
+                      'To go back to the home make a fist gesture and move yor hand up',
                       style: Theme.of(context).textTheme.headlineLarge
                           ?.copyWith(
                             color: Theme.of(context).colorScheme.onSurface,
@@ -64,23 +81,36 @@ class Direction_Page extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     SizedBox(height: 16),
-                    Text(
-                      'Add Video Here',
-                      style: Theme.of(context).textTheme.headlineLarge
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Hero(
+                          tag: 'video',
+                          child: SizedBox(
+                            height: 140,
+                            child: AspectRatio(
+                              aspectRatio:
+                                  16 /
+                                  9, // or any ratio you want, or use the controller's aspectRatio
+                              child: LoopingVideoWidget(
+                                assetPath: 'assets/Select.MOV',
+                              ),
+                            ),
                           ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(height: 56),
-                    //TODO: Wheel Effect
-                    Text(
-                      'Wave Up',
-                      style: Theme.of(context).textTheme.headlineSmall
-                          ?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                        Hero(
+                          tag: 'instruction',
+                          child: Text(
+                            'Go Home',
+                            style: Theme.of(context).textTheme.headlineMedium
+                                ?.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
                           ),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: 16),
                   ],
                 ),
               ),

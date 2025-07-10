@@ -1,0 +1,10 @@
+[Unit]
+Description=Run WavePad
+
+[Service]
+Type=simple
+ExecStart=/opt/Wave_Setup/wave_setup
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
