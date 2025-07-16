@@ -3,7 +3,7 @@ Description=Run WavePad
 
 [Service]
 Type=simple
-ExecStart=/opt/Wave_Setup/wave_setup
+ExecStart=/usr/bin/Graphical-Start-Up.sh
 Restart=on-failure
 
 [Install]

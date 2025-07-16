@@ -1,0 +1,6 @@
+name: Windowing
+mmdebstrap:
+  packages:
+    - xorg
+    - i3
+    - dunst

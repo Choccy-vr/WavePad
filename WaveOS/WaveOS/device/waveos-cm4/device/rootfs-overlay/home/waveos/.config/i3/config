@@ -1,0 +1,29 @@
+set $mod Mod4
+
+font pango:monospace 10
+
+# Launch your app at startup (replace with your app's path)
+exec --no-startup-id /opt/Wave_Env/wave_env
+
+# Make your app fullscreen automatically (replace "YourAppClass" with your app's window class)
+for_window [class="wave_env"] fullscreen enable
+
+# Map "h"(Home Gesture) key to workspace 1 (home)
+bindsym h workspace 1
+
+# Enable system tray
+# Replace with WaveOS's system tray
+bar {
+    status_command i3status
+    tray_output primary
+}
+
+# Start notification daemon
+# TODO: start dunst
+
+# Allow overlays to float
+for_window [title="Overlay"] floating enable
+
+# Optional: gaps for nicer look
+gaps inner 10
+gaps outer 10
