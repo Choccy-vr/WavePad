@@ -5,7 +5,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'Direction_Up.dart';
 
 class Touch_Page extends StatelessWidget {
-  const Touch_Page({Key? key}) : super(key: key);
+  const Touch_Page({super.key});
 
   @override
   Widget build(BuildContext context) {

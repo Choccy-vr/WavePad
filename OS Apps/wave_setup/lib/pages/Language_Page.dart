@@ -5,7 +5,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'Wifi_Page.dart';
 
 class LanguagePage extends StatelessWidget {
-  const LanguagePage({Key? key}) : super(key: key);
+  const LanguagePage({super.key});
 
   @override
   Widget build(BuildContext context) {

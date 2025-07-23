@@ -6,7 +6,7 @@ import '../Widgets/Video_Loop.dart';
 import 'Home.dart';
 
 class Select_Page extends StatefulWidget {
-  const Select_Page({Key? key}) : super(key: key);
+  const Select_Page({super.key});
 
   @override
   State<Select_Page> createState() => _Select_PageState();

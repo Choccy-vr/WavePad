@@ -4,3 +4,4 @@ mmdebstrap:
     - xorg
     - i3
     - dunst
+    - dmenu

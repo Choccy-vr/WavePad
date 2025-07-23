@@ -5,7 +5,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'Language_Page.dart';
 
 class StartPage extends StatelessWidget {
-  const StartPage({Key? key}) : super(key: key);
+  const StartPage({super.key});
 
   @override
   Widget build(BuildContext context) {

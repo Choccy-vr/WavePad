@@ -9,7 +9,7 @@ import 'Keyboard.dart';
 
 //Uncomment to actual use Wi-Fi functionality
 class Wifi_Page extends StatefulWidget {
-  const Wifi_Page({Key? key}) : super(key: key);
+  const Wifi_Page({super.key});
 
   @override
   State<Wifi_Page> createState() => _Wifi_PageState();

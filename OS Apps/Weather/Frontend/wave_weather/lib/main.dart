@@ -74,13 +74,13 @@ class Home_Page extends StatefulWidget {
 class _Home_PageState extends State<Home_Page> {
   final FocusNode _focusNode = FocusNode();
   String location = (WeatherData.locationData != null)
-      ? '${WeatherData.locationData!.City}, ${WeatherData.locationData!.Region}'
+      ? '${WeatherData.locationData!.city}, ${WeatherData.locationData!.region}'
       : 'Unknown Location';
   String currentTemp = (WeatherData.currentWeather != null)
-      ? '${WeatherData.currentWeather!.tempature}°'
+      ? '${WeatherData.currentWeather!.temperature}°'
       : '??°';
   String feelsLikeTemp = (WeatherData.currentWeather != null)
-      ? '${WeatherData.currentWeather!.ApparentTemperature}°'
+      ? '${WeatherData.currentWeather!.apparentTemperature}°'
       : '??°';
   String weatherCondition = (WeatherData.currentWeather != null)
       ? WeatherData.currentWeather!.weatherDescription

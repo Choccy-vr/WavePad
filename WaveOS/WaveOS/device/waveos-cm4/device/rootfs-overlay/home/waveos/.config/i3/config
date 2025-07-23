@@ -18,8 +18,7 @@ bar {
     tray_output primary
 }
 
-# Start notification daemon
-# TODO: start dunst
+# dunst should automatically start up
 
 # Allow overlays to float
 for_window [title="Overlay"] floating enable

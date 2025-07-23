@@ -32,7 +32,7 @@ class AppsPage extends StatefulWidget {
 }
 
 class _AppsPageState extends State<AppsPage> {
-  List<FileSystemEntity> _entities = [];
+  final List<FileSystemEntity> _entities = [];
   bool _isScanning = false;
   final FocusNode _focusNode = FocusNode();
 
@@ -102,9 +102,7 @@ class _AppsPageState extends State<AppsPage> {
                         crossAxisSpacing: 80,
                         crossAxisCount: 4,
                         children: _entities
-                            .where(
-                              (entity) => entity is Directory,
-                            ) // Look for folders
+                            .whereType<Directory>() // Look for folders
                             .map((entity) {
                               // Get just the folder name (App1, App2, etc.)
                               final appName = entity.path

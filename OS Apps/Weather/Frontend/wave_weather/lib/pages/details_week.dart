@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:wave_weather/Weather.dart';
-import 'package:wave_weather/widgets/Weather-Details.dart';
 import 'package:wave_weather/pages/details_tom.dart';
 import 'package:wave_weather/WeatherData.dart';
 import 'details_today.dart';
-import 'details_tom.dart';
 
 class DetailsWeekPage extends StatefulWidget {
   const DetailsWeekPage({super.key});

@@ -54,6 +54,10 @@
             "System.Data.SQLite": {
               "target": "Package",
               "version": "[1.0.119, )"
+            },
+            "Tmds.DBus": {
+              "target": "Package",
+              "version": "[0.21.2, )"
             }
           },
           "imports": [

@@ -5,7 +5,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'Update_Page.dart';
 
 class USB_Page extends StatelessWidget {
-  const USB_Page({Key? key}) : super(key: key);
+  const USB_Page({super.key});
 
   @override
   Widget build(BuildContext context) {

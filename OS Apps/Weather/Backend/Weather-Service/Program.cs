@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Tmds.DBus;
 using System.Net.NetworkInformation;
 namespace WeatherService
 {
@@ -22,12 +22,12 @@ namespace WeatherService
             Offset = 0,
             currency = ""
         };
+        private static DBusService? _dbusService;
         static async Task Main(string[] args)
         {
-            if (!File.Exists("/var/lib/WaveOS/weather.wvdb"))
-            {
-                await Database.CreateWeatherDatabaseAsync();
-            }
+            // Initialize the DBus service
+            await InitializeDBusService();
+            // Update the weather data immediately
             await UpdateWeather();
 
             // Start both timers concurrently
@@ -53,6 +53,25 @@ namespace WeatherService
             //Nothing runs below this point
 
         }
+        private static async Task InitializeDBusService()
+        {
+            try
+            {
+                var connection = new Connection(Address.Session);
+                await connection.ConnectAsync();
+
+                _dbusService = new DBusService();
+                await connection.RegisterObjectAsync(_dbusService);
+                await connection.RegisterServiceAsync("org.waveOS.Weather");
+
+                Console.WriteLine("D-Bus weather service registered successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to initialize D-Bus service: {ex.Message}");
+                throw;
+            }
+        }
         public static async Task<LocationData> GetLocation()
         {
             if (NetworkInterface.GetIsNetworkAvailable())
@@ -65,7 +84,7 @@ namespace WeatherService
                         if (location.Latitude != oldLocation.Latitude || location.Longitude != oldLocation.Longitude)
                         {
                             oldLocation = location;
-                            await Database.SendLocationToWaveDBAsync(location);
+                            _dbusService?.SetLocation(location);
                         }
                         return location;
                     }
@@ -97,15 +116,12 @@ namespace WeatherService
                     WeatherData current = await Weather.GetCurrentWeatherAsync(location.Latitude, location.Longitude);
                     List<DailyWeatherData> daily = await Weather.GetDailyWeatherAsync(location.Latitude, location.Longitude);
                     List<HourlyWeatherData> hourly = await Weather.GetHourlyWeatherAsync(location.Latitude, location.Longitude);
-                    await Database.SendCurrentWeatherToWaveDBAsync(current);
-                    foreach (var day in daily)
-                    {
-                        await Database.SendDailyWeatherToWaveDBAsync(day);
-                    }
-                    foreach (var hour in hourly)
-                    {
-                        await Database.SendHourlyWeatherToWaveDBAsync(hour);
-                    }
+                    _dbusService?.SetCurrentWeather(current);
+                    _dbusService?.ClearHourlyWeather();
+                    _dbusService?.ClearDailyWeather();
+                    _dbusService?.SetHourlyWeatherList(hourly);
+                    _dbusService?.SetDailyWeatherList(daily);
+                    
                 }
             }
             else
@@ -120,7 +136,7 @@ namespace WeatherService
                 if (oldLocation != null)
                 {
                     WeatherData current = await Weather.GetCurrentWeatherAsync(oldLocation.Latitude, oldLocation.Longitude);
-                    await Database.SendCurrentWeatherToWaveDBAsync(current);
+                    _dbusService?.SetCurrentWeather(current);
                 }
             }
             else

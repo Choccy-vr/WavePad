@@ -7,7 +7,7 @@ import '../Widgets/Video_Loop.dart';
 import 'Direction_Left.dart';
 
 class Direction__Down_Page extends StatefulWidget {
-  const Direction__Down_Page({Key? key}) : super(key: key);
+  const Direction__Down_Page({super.key});
 
   @override
   State<Direction__Down_Page> createState() => _Direction__Down_PageState();

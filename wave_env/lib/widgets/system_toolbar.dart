@@ -5,7 +5,7 @@ import 'package:quick_usb/quick_usb.dart';
 import 'dart:io';
 
 class SystemToolbar extends StatefulWidget {
-  const SystemToolbar({Key? key}) : super(key: key);
+  const SystemToolbar({super.key});
 
   @override
   State<SystemToolbar> createState() => _SystemToolbarState();

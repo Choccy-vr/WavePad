@@ -1,11 +1,11 @@
-import 'dart:io';
 import 'dart:convert';
+import 'package:dbus/dbus.dart';
 
 class CurrentWeatherData {
   final String lastUpdated;
-  final double tempature;
+  final double temperature;
   final int humidity;
-  final double ApparentTemperature;
+  final double apparentTemperature;
   final bool isDay;
   final double precipitation;
   final int weatherCode;
@@ -16,9 +16,9 @@ class CurrentWeatherData {
 
   CurrentWeatherData({
     required this.lastUpdated,
-    required this.tempature,
+    required this.temperature,
     required this.humidity,
-    required this.ApparentTemperature,
+    required this.apparentTemperature,
     required this.isDay,
     required this.precipitation,
     required this.weatherCode,
@@ -27,38 +27,14 @@ class CurrentWeatherData {
     required this.windDirection,
     required this.uvIndex,
   });
-
-  factory CurrentWeatherData.fromJson(Map<String, dynamic> json) {
-    if (json.isEmpty) {
-      throw ArgumentError('JSON data is empty');
-    }
-    if (json['success'] == false) {
-      throw Exception(
-        'Failed to fetch weather data: ${json['error'] ?? 'Unknown error'}',
-      );
-    }
-    return CurrentWeatherData(
-      lastUpdated: json['last_updated'] as String,
-      tempature: (json['tempature'] as num).toDouble(),
-      humidity: (json['humidity'] as num).toInt(),
-      ApparentTemperature: (json['apparent_temperature'] as num).toDouble(),
-      isDay: json['is_day'] == 1 || json['is_day'] == true,
-      precipitation: (json['precipitation'] as num).toDouble(),
-      weatherCode: json['weather_code'] as int,
-      weatherDescription: json['weather_description'] as String,
-      windSpeed: (json['wind_speed'] as num).toDouble(),
-      windDirection: (json['wind_direction'] as num).toDouble(),
-      uvIndex: (json['uv_index'] as num).toDouble(),
-    );
-  }
 }
 
 class HourlyWeatherData {
   final String time;
-  final double tempature;
+  final double temperature;
   final int humidity;
-  final double ApparentTemperature;
-  final int precipitation_probability;
+  final double apparentTemperature;
+  final int precipitationProbability;
   final double precipitation;
   final int weatherCode;
   final String weatherDescription;
@@ -66,38 +42,15 @@ class HourlyWeatherData {
 
   HourlyWeatherData({
     required this.time,
-    required this.tempature,
+    required this.temperature,
     required this.humidity,
-    required this.ApparentTemperature,
-    required this.precipitation_probability,
+    required this.apparentTemperature,
+    required this.precipitationProbability,
     required this.precipitation,
     required this.weatherCode,
     required this.weatherDescription,
     required this.isDay,
   });
-
-  factory HourlyWeatherData.fromJson(Map<String, dynamic> json) {
-    if (json.isEmpty) {
-      throw ArgumentError('JSON data is empty');
-    }
-    if (json['success'] == false) {
-      throw Exception(
-        'Failed to fetch weather data: ${json['error'] ?? 'Unknown error'}',
-      );
-    }
-    return HourlyWeatherData(
-      time: json['time'] as String,
-      tempature: (json['tempature'] as num).toDouble(),
-      humidity: (json['humidity'] as num).toInt(),
-      ApparentTemperature: (json['apparent_temperature'] as num).toDouble(),
-      precipitation_probability: (json['precipitation_probability'] as num)
-          .toInt(),
-      precipitation: (json['precipitation'] as num).toDouble(),
-      weatherCode: json['weather_code'] as int,
-      weatherDescription: json['weather_description'] as String,
-      isDay: json['is_day'] == 1 || json['is_day'] == true,
-    );
-  }
 }
 
 class DailyWeatherData {
@@ -118,203 +71,230 @@ class DailyWeatherData {
     required this.weatherCode,
     required this.weatherDescription,
   });
-
-  factory DailyWeatherData.fromJson(Map<String, dynamic> json) {
-    if (json.isEmpty) {
-      throw ArgumentError('JSON data is empty');
-    }
-    if (json['success'] == false) {
-      throw Exception(
-        'Failed to fetch weather data: ${json['error'] ?? 'Unknown error'}',
-      );
-    }
-    return DailyWeatherData(
-      date: json['date'] as String,
-      maxTemperature: (json['max_temperature'] as num).toDouble(),
-      minTemperature: (json['min_temperature'] as num).toDouble(),
-      uvIndexMax: (json['uv_index_max'] as num).toDouble(),
-      windSpeedMax: (json['wind_speed_max'] as num).toDouble(),
-      weatherCode: json['weather_code'] as int,
-      weatherDescription: json['weather_description'] as String,
-    );
-  }
 }
 
 class LocationData {
   final double latitude;
   final double longitude;
-  final String Continent;
-  final String ContinentCode;
-  final String Country;
-  final String CountryCode;
-  final String Region;
-  final String RegionName;
-  final String City;
-  final String Zip;
-  final String Timezone;
+  final String continent;
+  final String continentCode;
+  final String country;
+  final String countryCode;
+  final String region;
+  final String regionName;
+  final String city;
+  final String zip;
+  final String timezone;
 
   LocationData({
     required this.latitude,
     required this.longitude,
-    required this.Continent,
-    required this.ContinentCode,
-    required this.Country,
-    required this.CountryCode,
-    required this.Region,
-    required this.RegionName,
-    required this.City,
-    required this.Zip,
-    required this.Timezone,
+    required this.continent,
+    required this.continentCode,
+    required this.country,
+    required this.countryCode,
+    required this.region,
+    required this.regionName,
+    required this.city,
+    required this.zip,
+    required this.timezone,
   });
+}
 
-  factory LocationData.fromJson(Map<String, dynamic> json) {
-    if (json.isEmpty) {
-      throw ArgumentError('JSON data is empty');
+class WeatherDBusClient {
+  late DBusClient _client;
+  late DBusRemoteObject _weatherObject;
+  bool _initialized = false;
+
+  Future<void> init() async {
+    if (_initialized) return;
+
+    _client = DBusClient.session();
+    _weatherObject = DBusRemoteObject(
+      _client,
+      name: 'org.waveOS.Weather',
+      path: DBusObjectPath('/org/waveOS/Weather'),
+    );
+    _initialized = true;
+  }
+
+  Future<CurrentWeatherData> getCurrentWeather() async {
+    await init();
+
+    try {
+      final result = await _weatherObject.callMethod(
+        'org.waveOS.Weather',
+        'GetCurrentWeatherAsync',
+        [],
+      );
+
+      // The D-Bus result should contain your WeatherData object
+      final weatherStruct = result.returnValues[0] as DBusStruct;
+
+      return CurrentWeatherData(
+        lastUpdated: weatherStruct.children[11]
+            .asString(), // DateTime as string
+        temperature: weatherStruct.children[0].asDouble(),
+        humidity: weatherStruct.children[1].asInt32(),
+        apparentTemperature: weatherStruct.children[2].asDouble(),
+        isDay: weatherStruct.children[3].asBoolean(),
+        precipitation: weatherStruct.children[4].asDouble(),
+        weatherCode: weatherStruct.children[5].asInt32(),
+        weatherDescription: weatherStruct.children[6].asString(),
+        windSpeed: weatherStruct.children[7].asDouble(),
+        windDirection: weatherStruct.children[8].asDouble(),
+        uvIndex: weatherStruct.children[9].asDouble(),
+      );
+    } catch (e) {
+      throw Exception('Failed to fetch current weather data from D-Bus: $e');
     }
-    return LocationData(
-      latitude: json['latitude'] as double,
-      longitude: json['longitude'] as double,
-      Continent: json['continent'] as String,
-      ContinentCode: json['continent_code'] as String,
-      Country: json['country'] as String,
-      CountryCode: json['country_code'] as String,
-      Region: json['region'] as String,
-      RegionName: json['region_name'] as String,
-      City: json['city'] as String,
-      Zip: json['zip'] as String,
-      Timezone: json['timezone'] as String,
-    );
+  }
+
+  Future<List<HourlyWeatherData>> getHourlyWeather() async {
+    await init();
+
+    try {
+      final result = await _weatherObject.callMethod(
+        'org.waveOS.Weather',
+        'GetHourlyWeatherAsync',
+        [],
+      );
+
+      final weatherArray = result.returnValues[0] as DBusArray;
+
+      return weatherArray.children.map((item) {
+        final weatherStruct = item as DBusStruct;
+        return HourlyWeatherData(
+          time: weatherStruct.children[0].asString(), // DateTime as string
+          temperature: weatherStruct.children[1].asDouble(),
+          humidity: weatherStruct.children[2].asInt32(),
+          apparentTemperature: weatherStruct.children[3].asDouble(),
+          precipitationProbability: weatherStruct.children[4].asInt32(),
+          weatherCode: weatherStruct.children[5].asInt32(),
+          precipitation: weatherStruct.children[6].asDouble(),
+          isDay: weatherStruct.children[7].asBoolean(),
+          weatherDescription: weatherStruct.children[8].asString(),
+        );
+      }).toList();
+    } catch (e) {
+      throw Exception('Failed to fetch hourly weather data from D-Bus: $e');
+    }
+  }
+
+  Future<List<DailyWeatherData>> getDailyWeather() async {
+    await init();
+
+    try {
+      final result = await _weatherObject.callMethod(
+        'org.waveOS.Weather',
+        'GetDailyWeatherAsync',
+        [],
+      );
+
+      final weatherArray = result.returnValues[0] as DBusArray;
+
+      return weatherArray.children.map((item) {
+        final weatherStruct = item as DBusStruct;
+        return DailyWeatherData(
+          date: weatherStruct.children[0].asString(), // DateTime as string
+          maxTemperature: weatherStruct.children[1].asDouble(),
+          minTemperature: weatherStruct.children[2].asDouble(),
+          uvIndexMax: weatherStruct.children[3].asDouble(),
+          windSpeedMax: weatherStruct.children[4].asDouble(),
+          weatherCode: weatherStruct.children[5].asInt32(),
+          weatherDescription: weatherStruct.children[6].asString(),
+        );
+      }).toList();
+    } catch (e) {
+      throw Exception('Failed to fetch daily weather data from D-Bus: $e');
+    }
+  }
+
+  Future<DailyWeatherData> getDailyWeatherByDate(DateTime date) async {
+    await init();
+
+    try {
+      final result = await _weatherObject.callMethod(
+        'org.waveOS.Weather',
+        'GetDailyWeatherByDateAsync',
+        [DBusString(date.toIso8601String())],
+      );
+
+      final weatherStruct = result.returnValues[0] as DBusStruct;
+
+      return DailyWeatherData(
+        date: weatherStruct.children[0].asString(),
+        maxTemperature: weatherStruct.children[1].asDouble(),
+        minTemperature: weatherStruct.children[2].asDouble(),
+        uvIndexMax: weatherStruct.children[3].asDouble(),
+        windSpeedMax: weatherStruct.children[4].asDouble(),
+        weatherCode: weatherStruct.children[5].asInt32(),
+        weatherDescription: weatherStruct.children[6].asString(),
+      );
+    } catch (e) {
+      throw Exception(
+        'Failed to fetch daily weather data by date from D-Bus: $e',
+      );
+    }
+  }
+
+  Future<LocationData> getLocation() async {
+    await init();
+
+    try {
+      final result = await _weatherObject.callMethod(
+        'org.waveOS.Weather',
+        'GetLocationAsync',
+        [],
+      );
+
+      final locationStruct = result.returnValues[0] as DBusStruct;
+
+      return LocationData(
+        latitude: locationStruct.children[0].asDouble(),
+        longitude: locationStruct.children[1].asDouble(),
+        continent: locationStruct.children[2].asString(),
+        continentCode: locationStruct.children[3].asString(),
+        country: locationStruct.children[4].asString(),
+        countryCode: locationStruct.children[5].asString(),
+        region: locationStruct.children[6].asString(),
+        regionName: locationStruct.children[7].asString(),
+        city: locationStruct.children[8].asString(),
+        zip: locationStruct.children[9].asString(),
+        timezone: locationStruct.children[10].asString(),
+      );
+    } catch (e) {
+      throw Exception('Failed to fetch location data from D-Bus: $e');
+    }
+  }
+
+  void dispose() {
+    if (_initialized) {
+      _client.close();
+      _initialized = false;
+    }
   }
 }
 
-Future<Map<String, dynamic>> sendToWaveDB({
-  required String action,
-  required String database,
-  required String table,
-  required List<String> data,
-  String pipeName = 'WaveDB_Pipe',
-  Duration timeout = const Duration(seconds: 5),
-}) async {
-  final request = {
-    'action': action,
-    'database': database,
-    'table': table,
-    'data': data,
-  };
+// Global instance for easy access
+final WeatherDBusClient weatherClient = WeatherDBusClient();
 
-  final requestJson = jsonEncode(request);
-
-  // Write request to the named pipe
-  final pipe = await File(
-    '/tmp/$pipeName',
-  ).open(mode: FileMode.write).timeout(timeout);
-  await pipe.writeString(requestJson).timeout(timeout);
-  await pipe.flush().timeout(timeout);
-  await pipe.close().timeout(timeout);
-
-  // Read response from the named pipe
-  final responsePipe = await File(
-    '/tmp/$pipeName',
-  ).open(mode: FileMode.read).timeout(timeout);
-  final responseBytes = await responsePipe.read(4096).timeout(timeout);
-  await responsePipe.close().timeout(timeout);
-
-  final responseJson = utf8.decode(responseBytes);
-  return jsonDecode(responseJson) as Map<String, dynamic>;
+Future<CurrentWeatherData> getCurrentWeather() async {
+  return await weatherClient.getCurrentWeather();
 }
 
-Future<CurrentWeatherData> GetCurrentWeather() async {
-  final databasePath = '/var/lib/WaveOS/weather.wvdb';
-  try {
-    final result = await sendToWaveDB(
-      action: 'READ',
-      database: databasePath,
-      table: 'current_weather_data',
-      data: [
-        'last_updated',
-        'tempature',
-        'humidity',
-        'apparent_tempature',
-        'is_day',
-        'precipitation',
-        'weather_code',
-        'weather_description',
-        'wind_speed',
-        'wind_direction',
-        'uv_index',
-      ],
-    );
-    print('Response from WaveDB: $result');
-    final weather = CurrentWeatherData.fromJson(result);
-    return weather;
-  } catch (e) {
-    throw Exception('Failed to fetch current weather data: $e');
-  }
+Future<List<HourlyWeatherData>> getHourlyWeather() async {
+  return await weatherClient.getHourlyWeather();
 }
 
-Future<List<HourlyWeatherData>> GetHourlyWeather() async {
-  final databasePath = '/var/lib/WaveOS/weather.wvdb';
-  try {
-    final result = await sendToWaveDB(
-      action: 'READ_ROWS',
-      database: databasePath,
-      table: 'hour_weather_data',
-      data: [],
-    );
-    print('Response from WaveDB: $result');
-    final weather = (result['data'] as List)
-        .map((item) => HourlyWeatherData.fromJson(item))
-        .toList();
-    return weather;
-  } catch (e) {
-    throw Exception('Failed to fetch hourly weather data: $e');
-  }
+Future<List<DailyWeatherData>> getDailyWeather() async {
+  return await weatherClient.getDailyWeather();
 }
 
-Future<List<DailyWeatherData>> GetDailyWeather() async {
-  final databasePath = '/var/lib/WaveOS/weather.wvdb';
-  try {
-    final result = await sendToWaveDB(
-      action: 'READ_ROWS',
-      database: databasePath,
-      table: 'daily_weather_data',
-      data: [],
-    );
-    print('Response from WaveDB: $result');
-    final weather = (result['data'] as List)
-        .map((item) => DailyWeatherData.fromJson(item))
-        .toList();
-    return weather;
-  } catch (e) {
-    throw Exception('Failed to fetch daily weather data: $e');
-  }
+Future<DailyWeatherData> getDailyWeatherByDate(DateTime date) async {
+  return await weatherClient.getDailyWeatherByDate(date);
 }
 
-Future<LocationData> GetLocationData() async {
-  final databasePath = '/var/lib/WaveOS/location.wvdb';
-  try {
-    final result = await sendToWaveDB(
-      action: 'READ',
-      database: databasePath,
-      table: 'location_data',
-      data: [
-        'latitude',
-        'longitude',
-        'continent',
-        'continent_code',
-        'country',
-        'country_code',
-        'region',
-        'region_name',
-        'city',
-        'zip',
-        'timezone',
-      ],
-    );
-    print('Response from WaveDB: $result');
-    final location = LocationData.fromJson(result);
-    return location;
-  } catch (e) {
-    throw Exception('Failed to fetch location data: $e');
-  }
+Future<LocationData> getLocation() async {
+  return await weatherClient.getLocation();
 }

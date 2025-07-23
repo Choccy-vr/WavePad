@@ -8,12 +8,12 @@ class Keyboard extends StatefulWidget {
   final ValueChanged<String> onDone;
 
   const Keyboard({
-    Key? key,
+    super.key,
     required this.title,
     this.initialShiftEnabled = false,
     this.isNumeric = false,
     required this.onDone,
-  }) : super(key: key);
+  });
 
   @override
   _KeyboardState createState() => _KeyboardState();
@@ -130,7 +130,7 @@ class _KeyboardState extends State<Keyboard> {
           text = text.substring(0, text.length - 1);
           break;
         case VirtualKeyboardKeyAction.Return:
-          text = text + '\n';
+          text = '$text\n';
           break;
         case VirtualKeyboardKeyAction.Space:
           text = text + (key.text ?? '');

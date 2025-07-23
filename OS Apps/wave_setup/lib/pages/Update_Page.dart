@@ -5,7 +5,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'help/Touch.dart';
 
 class Update_Page extends StatelessWidget {
-  const Update_Page({Key? key}) : super(key: key);
+  const Update_Page({super.key});
 
   @override
   Widget build(BuildContext context) {

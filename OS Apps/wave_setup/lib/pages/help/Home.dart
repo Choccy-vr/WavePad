@@ -4,7 +4,7 @@ import '../Widgets/Video_Loop.dart';
 import 'dart:io';
 
 class Home_Page extends StatefulWidget {
-  const Home_Page({Key? key}) : super(key: key);
+  const Home_Page({super.key});
 
   @override
   State<Home_Page> createState() => _Home_PageState();

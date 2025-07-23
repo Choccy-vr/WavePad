@@ -389,6 +389,19 @@
             "rid": "win"
           }
         }
+      },
+      "Tmds.DBus/0.21.2": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/Tmds.DBus.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/Tmds.DBus.dll": {
+            "related": ".xml"
+          }
+        }
       }
     }
   },
@@ -1207,11 +1220,27 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "Tmds.DBus/0.21.2": {
+      "sha512": "KejVYde7VYeWsAj4aaELthlJyVzsbvG4rmHgaXuyPmv8QuN4SLYotKGYtYqWRG+zj9c24/VCYq+V67SRgasDYQ==",
+      "type": "package",
+      "path": "tmds.dbus/0.21.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net6.0/Tmds.DBus.dll",
+        "lib/net6.0/Tmds.DBus.xml",
+        "lib/netstandard2.0/Tmds.DBus.dll",
+        "lib/netstandard2.0/Tmds.DBus.xml",
+        "tmds.dbus.0.21.2.nupkg.sha512",
+        "tmds.dbus.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
-      "System.Data.SQLite >= 1.0.119"
+      "System.Data.SQLite >= 1.0.119",
+      "Tmds.DBus >= 0.21.2"
     ]
   },
   "packageFolders": {
@@ -1268,6 +1297,10 @@
           "System.Data.SQLite": {
             "target": "Package",
             "version": "[1.0.119, )"
+          },
+          "Tmds.DBus": {
+            "target": "Package",
+            "version": "[0.21.2, )"
           }
         },
         "imports": [

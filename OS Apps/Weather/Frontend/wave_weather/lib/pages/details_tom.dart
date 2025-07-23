@@ -115,7 +115,7 @@ class _DetailsTomPageState extends State<DetailsTomPage> {
     }).toList();
     // Initialize the weather data
     if (tomorrowHours.isNotEmpty) {
-      var _precip_chance = 0;
+      var precipChance = 0;
       // Calculate average humidity
       double avgHumidity =
           tomorrowHours.map((hour) => hour.humidity).reduce((a, b) => a + b) /
@@ -124,8 +124,8 @@ class _DetailsTomPageState extends State<DetailsTomPage> {
       // If you want it as a string with percent:
       Forecasted_Humidity = '${avgHumidity.round()}%';
       for (var hour in tomorrowHours) {
-        if (hour.precipitation_probability > _precip_chance) {
-          _precip_chance = hour.precipitation_probability;
+        if (hour.precipitation_probability > precipChance) {
+          precipChance = hour.precipitation_probability;
         }
       }
     } else {
