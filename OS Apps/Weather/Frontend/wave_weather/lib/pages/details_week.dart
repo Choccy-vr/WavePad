@@ -14,11 +14,11 @@ class DetailsWeekPage extends StatefulWidget {
 
 class _DetailsWeekPageState extends State<DetailsWeekPage> {
   int selectedIndex = 2;
-  String Tempature = (WeatherData.currentWeather != null)
-      ? '${WeatherData.currentWeather!.tempature}°'
+  String Temperature = (WeatherData.currentWeather != null)
+      ? '${WeatherData.currentWeather!.temperature}°'
       : '??°';
   String Location = (WeatherData.locationData != null)
-      ? '${WeatherData.locationData!.City}, ${WeatherData.locationData!.Region}'
+      ? '${WeatherData.locationData!.city}, ${WeatherData.locationData!.region}'
       : 'Unknown Location';
   String Current_Condition = (WeatherData.currentWeather != null)
       ? WeatherData.currentWeather!.weatherDescription
@@ -144,7 +144,7 @@ class _DetailsWeekPageState extends State<DetailsWeekPage> {
                     Row(
                       children: [
                         Text(
-                          Tempature,
+                          Temperature,
                           style: Theme.of(context).textTheme.headlineMedium
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.primary,

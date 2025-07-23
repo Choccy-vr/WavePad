@@ -20,19 +20,19 @@ class WeatherData {
   static Timer? _weatherTimer;
 
   static Future<void> updateCurrent() async {
-    currentWeather = await GetCurrentWeather();
+    currentWeather = await getCurrentWeather();
   }
 
   static Future<void> updateHourly() async {
-    hourlyWeather = await GetHourlyWeather();
+    hourlyWeather = await getHourlyWeather();
   }
 
   static Future<void> updateDaily() async {
-    dailyWeather = await GetDailyWeather();
+    dailyWeather = await getDailyWeather();
   }
 
   static Future<void> updateLocation() async {
-    locationData = await GetLocationData();
+    locationData = await getLocation();
   }
 
   static Future<void> updateWeather() async {

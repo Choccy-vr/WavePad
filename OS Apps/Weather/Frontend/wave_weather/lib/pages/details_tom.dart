@@ -15,11 +15,11 @@ class DetailsTomPage extends StatefulWidget {
 
 class _DetailsTomPageState extends State<DetailsTomPage> {
   int selectedIndex = 1;
-  String Tempature = (WeatherData.currentWeather != null)
-      ? '${WeatherData.currentWeather!.tempature}°'
+  String Temperature = (WeatherData.currentWeather != null)
+      ? '${WeatherData.currentWeather!.temperature}°'
       : '??°';
   String Location = (WeatherData.locationData != null)
-      ? '${WeatherData.locationData!.City}, ${WeatherData.locationData!.Region}'
+      ? '${WeatherData.locationData!.city}, ${WeatherData.locationData!.region}'
       : 'Unknown Location';
   String Current_Condition = (WeatherData.currentWeather != null)
       ? WeatherData.currentWeather!.weatherDescription
@@ -124,8 +124,8 @@ class _DetailsTomPageState extends State<DetailsTomPage> {
       // If you want it as a string with percent:
       Forecasted_Humidity = '${avgHumidity.round()}%';
       for (var hour in tomorrowHours) {
-        if (hour.precipitation_probability > precipChance) {
-          precipChance = hour.precipitation_probability;
+        if (hour.precipitationProbability > precipChance) {
+          precipChance = hour.precipitationProbability;
         }
       }
     } else {
@@ -179,7 +179,7 @@ class _DetailsTomPageState extends State<DetailsTomPage> {
                     Row(
                       children: [
                         Text(
-                          Tempature,
+                          Temperature,
                           style: Theme.of(context).textTheme.headlineMedium
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.primary,

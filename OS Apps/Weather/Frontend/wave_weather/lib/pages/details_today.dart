@@ -15,8 +15,8 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   int selectedIndex = 0;
-  String Tempature = (WeatherData.currentWeather != null)
-      ? '${WeatherData.currentWeather!.tempature}°'
+  String Temperature = (WeatherData.currentWeather != null)
+      ? '${WeatherData.currentWeather!.temperature}°'
       : '??°';
   String Humidity = (WeatherData.currentWeather != null)
       ? '${WeatherData.currentWeather!.humidity}%'
@@ -25,7 +25,7 @@ class _DetailsPageState extends State<DetailsPage> {
       ? '${WeatherData.currentWeather!.precipitation} Inch'
       : '? Inch';
   String Location = (WeatherData.locationData != null)
-      ? '${WeatherData.locationData!.City}, ${WeatherData.locationData!.Region}'
+      ? '${WeatherData.locationData!.city}, ${WeatherData.locationData!.region}'
       : 'Unknown Location';
   String Condition = (WeatherData.currentWeather != null)
       ? WeatherData.currentWeather!.weatherDescription
@@ -140,7 +140,7 @@ class _DetailsPageState extends State<DetailsPage> {
                     Row(
                       children: [
                         Text(
-                          Tempature,
+                          Temperature,
                           style: Theme.of(context).textTheme.headlineMedium
                               ?.copyWith(
                                 color: Theme.of(context).colorScheme.primary,
