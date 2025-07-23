@@ -1,5 +1,5 @@
+## If you don't want to read, you can just scroll down to the pics
 # Demo WavePad
-
 Hello and welcome to WavePad
 
 Thank you for voting on WavePad it means the world to me.
