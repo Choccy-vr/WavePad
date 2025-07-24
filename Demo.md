@@ -1,5 +1,5 @@
 ## If you don't want to read, you can just scroll down to the pics
-# Demo WavePad
+# Demo WavePad v1 (0.1a)
 (This project was originally started as a highway project but I have not submitted it to highway it is now only for SoM)
 
 (Also the videos are currently not working)
