@@ -1,28 +1,24 @@
 ## If you don't want to read, you can just scroll down to the pics
+(This project was originally started as a highway project, but I have not submitted it to highway; it is now only for SoM.)
 # Demo WavePad v1 (0.1a)
-(This project was originally started as a highway project but I have not submitted it to highway it is now only for SoM)
-
-(Also the videos are currently not working)
-
-
 
 Hello and welcome to WavePad
 
 Thank you for voting on WavePad; it means the world to me.
 
-Please take your time and read this page WavePad is huge project and I would apprciate it if you saw what ll it can do and what went into it.
+Please take your time and read this page. WavePad is a huge project and I would appreciate it if you saw what ll it can do and what went into it.
 
 ### Why is this the Demo Page?
 
-WavePad is both a hardware and Software Project. You have the actual hardware, and you have WaveOS. WaveOS is very specialized and will only run on WavePad it might be able to run on a VM if you try hard enough but would would want to install an OS to demo a product. Then you have the hardware aspect. I do not have the actual hardware built yet but this way I can still share my designs.
+WavePad is both a hardware and Software Project. You have the actual hardware, and you have WaveOS. WaveOS is very specialized and will only run on WavePad it might be able to run on a VM if you try hard enough but would would want to install an OS to demo a product. Then you have the hardware aspect. I do not have the actual hardware built yet, but this way I can still share my designs.
 
 # What is WavePad?
 
-WavePad is a project I have been working long and hard on. The time showed on hackatime is no where near close to what I spent on this because I might've been brainstorming, getting a rough design or other stuff that was not done on a computer. WavePad is a gesture controlled desktop companion. My best explanion is pretend to put a Stream Deck, Apple Watch and Hand Tracking all in one product you get this. It is meant to resemble a Stream Deck Mini.
+WavePad is a project I have been working on long and hard on. The time shown on Hackatime is nowhere near close to what I spent on this because I might've been brainstorming, getting a rough design, or doing other stuff that was not done on a computer. WavePad is a gesture-controlled desktop companion. My best explanation is to pretend to put a Stream Deck, Apple Watch, and Hand Tracking all in one product, you get this. It is meant to resemble a Stream Deck Mini.
 
 # Use Case For WavePad
 
-WavePad can be used almost anywhere due to it only needing power and WiFi for most of its functions. Its intended use case is like a Stream Deck.  WavePad sits on your desk and helps you while you are working or playing. It can act like a macro pad for your pc, helping your productivity. It can play, pause music, and turn the volume up and down. But that is not it, you can also check the weather and more. This project is very complex there will be more apps in the future my idea is control your smart home, get notification from your phone and computer, open apps on your computer, control music on Spotify, and more as you can tell this is a huge undertaking and can't posibly be done in one summer. 
+WavePad can be used almost anywhere due to it only needing power and WiFi for most of its functions. Its intended use case is like a Stream Deck.  WavePad sits on your desk and helps you while you are working or playing. It can act like a macro pad for your pc, helping your productivity. It can play, pause music, and turn the volume up and down. But that is not it, you can also check the weather and more. This project is very complex. There will be more apps in the future. My idea is to control your smart home, get notifications from your phone and computer, open apps on your computer, control music on Spotify, and more. As you can tell, this is a huge undertaking and can't possibly be done in one summer. 
 
 # What is WaveOS
 
@@ -30,11 +26,11 @@ WaveOS is a custom OS built by me based on Raspberry Pi OS Lite. WaveOS is made 
 
 # Apps?
 
-Yes, WaveOS has apps like every computer. This helps WavePad acheive certain things like acting like a macropad, weather, etc. All of those apps they are WaveOS Sys Apps these are simply just apps that are part of the base system and mostlikely crucial to the device's function. But the best part you can build your own app with a app store to come!
+Yes, WaveOS has apps like every computer. This helps WavePad achieve certain things like acting like a macropad, weather, etc. All of those apps they are WaveOS Sys Apps these are simply just apps that are part of the base system and most likely crucial to the device's function. But the best part you can build your own app with an app store to come!
 
 # I can make my own app!
 
-yep not fully supported yet but I have made a tool called wvpkg that packages and installs wvpkg because of how WaveOS and WavePad are made you can pretty much just make a app like any other linux app use wvpkg to package it and install it to your WavePad. My plan is to get this more fleshed out and to add a app store.
+Yep, not fully supported yet, but I have made a tool called wvpkg that packages and installs wvpkg because of how WaveOS and WavePad are made. You can pretty much just make an app like any other Linux app, use wvpkg to package it, and install it to your WavePad. My plan is to get this more fleshed out and to add an app store.
 
 # Hardware
 
