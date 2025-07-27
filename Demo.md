@@ -1,5 +1,8 @@
 ## If you don't want to read, you can just scroll down to the pics
 (This project was originally started as a highway project, but I have not submitted it to highway; it is now only for SoM.)
+### Reviewer? look at these videos too: 
+https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Wave_Env_OnDevice.mp4
+https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Wave_Setup_OnDevice.mp4
 # Demo WavePad v1 (0.1a)
 
 Hello and welcome to WavePad
