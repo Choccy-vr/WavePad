@@ -1,0 +1,6 @@
+C:\Users\wante\WavePad\OS Services\sys_stats\obj\Debug\net9.0\sys_stats.csproj.AssemblyReference.cache
+C:\Users\wante\WavePad\OS Services\sys_stats\obj\Debug\net9.0\sys_stats.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\wante\WavePad\OS Services\sys_stats\obj\Debug\net9.0\sys_stats.AssemblyInfoInputs.cache
+C:\Users\wante\WavePad\OS Services\sys_stats\obj\Debug\net9.0\sys_stats.AssemblyInfo.cs
+C:\Users\wante\WavePad\OS Services\sys_stats\obj\Debug\net9.0\sys_stats.csproj.CoreCompileInputs.cache
+C:\Users\wante\WavePad\OS Services\sys_stats\obj\Debug\net9.0\sys_stats.sourcelink.json

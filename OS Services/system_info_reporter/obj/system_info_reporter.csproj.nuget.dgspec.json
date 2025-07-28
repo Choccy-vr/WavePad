@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\WaveDB.csproj": {}
+    "C:\\Users\\wante\\WavePad\\OS Services\\system_info_reporter\\system_info_reporter.csproj": {}
   },
   "projects": {
-    "C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\WaveDB.csproj": {
+    "C:\\Users\\wante\\WavePad\\OS Services\\system_info_reporter\\system_info_reporter.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\WaveDB.csproj",
-        "projectName": "WaveDB",
-        "projectPath": "C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\WaveDB.csproj",
+        "projectUniqueName": "C:\\Users\\wante\\WavePad\\OS Services\\system_info_reporter\\system_info_reporter.csproj",
+        "projectName": "system_info_reporter",
+        "projectPath": "C:\\Users\\wante\\WavePad\\OS Services\\system_info_reporter\\system_info_reporter.csproj",
         "packagesPath": "C:\\Users\\wante\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\wante\\WavePad\\OS Services\\WaveDB\\WaveDB\\obj\\",
+        "outputPath": "C:\\Users\\wante\\WavePad\\OS Services\\system_info_reporter\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -51,14 +51,6 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "dependencies": {
-            "SQLite": {
-              "target": "Package",
-              "version": "[3.13.0, )"
-            },
-            "System.Data.SQLite": {
-              "target": "Package",
-              "version": "[1.0.119, )"
-            },
             "Tmds.DBus": {
               "target": "Package",
               "version": "[0.21.2, )"

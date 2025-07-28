@@ -21,7 +21,9 @@ echo 0x0200 > bcdUSB  # USB 2.0 because of the CM4 USB controller
 
 # Strings
 mkdir -p strings/0x409
-echo "WVPD000001$(date +%Y%m%d)" > strings/0x409/serialnumber
+# Serial number = WVPDxxxxxxxttttttt
+# [model][number][date]
+echo "WVPD00000120250724" > strings/0x409/serialnumber
 echo "Ginobeano" > strings/0x409/manufacturer
 echo "WavePad" > strings/0x409/product
 

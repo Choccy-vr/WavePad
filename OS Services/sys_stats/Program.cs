@@ -1,25 +1,26 @@
 ﻿using Tmds.DBus;
-namespace WaveDB
+
+namespace sys_stats
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async void Main(string[] args)
         {
             try
             {
                 var connection = new Connection(Address.Session);
                 await connection.ConnectAsync();
 
-                var waveDBService = new WaveDBService();
-                await connection.RegisterObjectAsync(waveDBService);
-                await connection.RegisterServiceAsync("org.waveOS.WaveDB");
+                var service = new SysStatsService();
+                await connection.RegisterObjectAsync(service);
+                await connection.RegisterServiceAsync("org.waveOS.SysStats");
 
                 // Keep the service running
                 await Task.Delay(-1);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to start WaveDB service: {ex.Message}");
+                Console.WriteLine($"Failed to start SysStats service: {ex.Message}");
             }
         }
     }

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "4NKk4BfjLQI=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\wante\\WavePad\\OS Services\\sys_stats\\sys_stats.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\wante\\.nuget\\packages\\tmds.dbus\\0.21.2\\tmds.dbus.0.21.2.nupkg.sha512"
+  ],
+  "logs": []
+}

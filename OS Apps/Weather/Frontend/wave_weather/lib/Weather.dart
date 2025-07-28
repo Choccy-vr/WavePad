@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dbus/dbus.dart';
 
 class CurrentWeatherData {

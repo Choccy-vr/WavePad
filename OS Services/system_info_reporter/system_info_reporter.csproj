@@ -8,8 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SQLite" Version="3.13.0" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.119" />
     <PackageReference Include="Tmds.DBus" Version="0.21.2" />
   </ItemGroup>
 

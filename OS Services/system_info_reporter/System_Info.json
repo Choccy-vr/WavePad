@@ -1,0 +1,13 @@
+{
+    "system": {
+        "os": "waveOS",
+        "version": 0.1,
+        "build_num": 20250724,
+        "ending_letter": "d"
+    },
+    "device": {
+        "model": "WavePad",
+        "version": 1.0,
+        "serial": "WVPD00000120250724"
+    }
+}

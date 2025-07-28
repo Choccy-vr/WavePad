@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WaveDB")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+644b8841b7c9d1a19cce22c648a66fcf59d3cdcc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4b1d5a976c050b0dc2cb6454a65443a261c59ee9")]
 [assembly: System.Reflection.AssemblyProductAttribute("WaveDB")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WaveDB")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

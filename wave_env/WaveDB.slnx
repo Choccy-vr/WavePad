@@ -1,4 +1,6 @@
 <Solution>
   <Project Path="../OS Apps/Weather/Backend/Weather-Service/Weather-Service.csproj" />
+  <Project Path="../OS Services/system_info_reporter/system_info_reporter.csproj" />
+  <Project Path="../OS Services/sys_stats/sys_stats.csproj" />
   <Project Path="../OS Services/WaveDB/WaveDB/WaveDB.csproj" />
 </Solution>
