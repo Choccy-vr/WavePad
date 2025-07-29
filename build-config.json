@@ -1,0 +1,19 @@
+{
+    "os_apps": {
+        "wave_weather":{
+            "Folder_Path": "OS Apps/Weather/Frontend/wave_weather",
+            "Type": "flutter",
+            "Name": "Weather"
+        }
+    },
+    "os_services": {
+        "wave_weather_service": {
+            "Folder_Path": "OS Apps/Weather/Backend/Weather_Service",
+            "Type": "csharp",
+            "Name": "Weather_Service",
+            "Output_Path": "/WaveOS/WaveOS/device/waveos-cm4/device/rootfs-overlay/usr/lib/wave_weather"
+        }
+    },
+    "os_apps_output_directory": "/WaveOS/WaveOS/device/waveos-cm4/device/rootfs-overlay/home/waveos/Applications",
+    "target_architecture": "aarch64"
+}
