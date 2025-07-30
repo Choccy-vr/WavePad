@@ -4,13 +4,14 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:window_manager/window_manager.dart';
 import 'dart:async';
 import 'dart:ui';
+import 'dbus/dbus.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = WindowOptions(
-    size: const Size(226, 55),
+    size: const Size(161, 55),
     center: false,
     backgroundColor: Colors.transparent,
     skipTaskbar: true, // Hide from taskbar
@@ -56,14 +57,48 @@ class SystemToolbar extends StatefulWidget {
 class _SystemToolbarState extends State<SystemToolbar> {
   bool WiFi = false;
   bool USB = true;
-  bool Notifications = true;
-  // Code for getting all this stuff will be here once I move everything to DBUS
-  // TODO: Implement USB, WiFi, and Notification status checks
+  Timer? _currentTimer;
+
+  Future<void> UpdateStats() async {
+    try {
+      SysStatsClient client = SysStatsClient();
+      await client.init();
+      WiFi = await client.isConnectedWiFi();
+      USB = await client.isConnectedUSB();
+      setState(() {});
+    } catch (e) {
+      print('Error updating system stats: $e');
+    }
+  }
+
+  Future<void> startAutoUpdate() async {
+    // Update system status
+    await UpdateStats();
+    // Update system status every minute
+    _currentTimer?.cancel();
+    _currentTimer = Timer.periodic(
+      const Duration(minutes: 1),
+      (_) => UpdateStats(),
+    );
+  }
+
+  void stopAutoUpdate() {
+    _currentTimer?.cancel();
+  }
+
+  void initState() {
+    super.initState();
+    startAutoUpdate();
+  }
+
+  void dispose() {
+    stopAutoUpdate();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     int visibleItems = 2; // USB and WiFi always visible
-    if (Notifications) visibleItems++;
     double totalWidth =
         (visibleItems * 60) + ((visibleItems - 1) * 4) + 16; // padding
     return Expanded(
@@ -75,7 +110,7 @@ class _SystemToolbarState extends State<SystemToolbar> {
             width: totalWidth,
             height: 55,
             decoration: BoxDecoration(
-              // Gradient using your theme colors with glass effect
+              // Gradient using waveOS colors
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -97,15 +132,13 @@ class _SystemToolbarState extends State<SystemToolbar> {
                 color: Color.lerp(
                   Theme.of(context).colorScheme.outline,
                   Colors.white,
-                  0.1, // Blend your outline color with white
+                  0.1, // Blend outline with white
                 )!.withOpacity(0.2),
                 width: 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).colorScheme.primary.withOpacity(
-                    0.1,
-                  ), // Use your primary color
+                  color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                   offset: Offset(0, 1),
                   blurRadius: 0,
                   spreadRadius: 0,
@@ -119,7 +152,6 @@ class _SystemToolbarState extends State<SystemToolbar> {
               ],
             ),
             child: Container(
-              // Inner container for inset effect
               margin: EdgeInsets.all(1),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(26.5),
@@ -139,21 +171,7 @@ class _SystemToolbarState extends State<SystemToolbar> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(width: 8), // Padding on the left
-                  if (Notifications) ...[
-                    SizedBox(
-                      width: 60,
-                      height: 60,
-                      child: Center(
-                        child: Icon(
-                          Symbols.notifications_unread_rounded,
-                          color: Theme.of(context).colorScheme.primaryFixed,
-                          size: 40,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 4),
-                  ],
+                  SizedBox(width: 8),
                   SizedBox(
                     width: 60,
                     height: 60,
@@ -163,7 +181,7 @@ class _SystemToolbarState extends State<SystemToolbar> {
                         color: USB
                             ? Theme.of(context).colorScheme.primaryFixed
                             : Theme.of(context).colorScheme.error,
-                        size: 40,
+                        size: 35,
                       ),
                     ),
                   ),
@@ -177,11 +195,11 @@ class _SystemToolbarState extends State<SystemToolbar> {
                         color: WiFi
                             ? Theme.of(context).colorScheme.primaryFixed
                             : Theme.of(context).colorScheme.error,
-                        size: 40,
+                        size: 35,
                       ),
                     ),
                   ),
-                  SizedBox(width: 8), // Padding on the right
+                  SizedBox(width: 8),
                 ],
               ),
             ),
