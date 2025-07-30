@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Wave Setup
+
+[Service]
+Type=simple
+ExecStart=/opt/Wave_Setup/wave_setup
+Restart=no
+
+[Install]
+WantedBy=multi-user.target

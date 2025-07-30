@@ -1,0 +1,37 @@
+[Unit]
+Description=WaveDB Database Manager
+Documentation=https://github.com/Choccy-vr/WavePad
+After=network.target local-fs.target
+Wants=network.target
+Before=multi-user.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/WaveDB
+ExecStart=/opt/WaveDB/WaveDB
+ExecReload=/bin/kill -HUP $MAINPID
+
+# Restart configuration
+Restart=always
+RestartSec=10
+StartLimitInterval=60
+StartLimitBurst=3
+
+# Process management
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=30
+SendSIGKILL=yes
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=wavedb
+
+# Environment
+Environment=DOTNET_ENVIRONMENT=Production
+
+[Install]
+WantedBy=multi-user.target

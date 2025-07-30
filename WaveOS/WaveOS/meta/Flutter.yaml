@@ -1,0 +1,24 @@
+name: Flutter
+mmdebstrap:
+  packages:
+    - libc6
+    - libstdc++6
+    - libgcc-s1
+    - libz1
+    - liblzma5
+    - libgl1
+    - libglu1-mesa
+    - libegl1
+    - libgtk-3-0
+    - libx11-6
+    - libxext6
+    - libxrender1
+    - libxcb1
+    - libpng16-16
+    - libjpeg62-turbo
+    - libharfbuzz0b
+    - libpango-1.0-0
+    - libatk1.0-0
+    - libcairo2
+    - libicu72
+    - libdbus-1-3

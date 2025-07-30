@@ -1,0 +1,10 @@
+[Unit]
+Description=Run WavePad
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/Graphical-Start-Up.sh
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

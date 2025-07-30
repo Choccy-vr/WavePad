@@ -3,9 +3,13 @@ mmdebstrap:
   packages:
     - unzip
     - cmake
-    - libraspberrypi-dev
     - build-essential
     - wget
     - nano
-    - dotnet-runtime-9.0
-    
+  customize-hooks:
+    - |-
+      set -ex
+      chroot "$1" wget https://dot.net/v1/dotnet-install.sh -O /tmp/dotnet-install.sh
+      chroot "$1" chmod +x ./tmp/dotnet-install.sh
+      chroot "$1" ./tmp/dotnet-install.sh --channel 9.0 --runtime dotnet
+      chroot "$1" rm /tmp/dotnet-install.sh

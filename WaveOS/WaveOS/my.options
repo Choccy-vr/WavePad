@@ -2,6 +2,5 @@
 DEVICE_HOSTNAME=WaveOS
 # All variables will be translated to lower case and made available to hooks
 device_user1=waveos
-device_user1pass=WaveOS
 # Variables set in the .cfg file can be overridden
 IMAGE_NAME=WaveOS-Cm4
