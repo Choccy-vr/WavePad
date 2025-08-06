@@ -15,6 +15,9 @@
 		{
 			"name": "OS Apps",
 			"path": "OS Apps"
+		},
+		{
+			"path": "\\\\192.168.68.72\\pi_share\\home\\gino\\Desktop\\pi-gen"
 		}
 	],
 	"settings": {

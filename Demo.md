@@ -1,8 +1,15 @@
 ## If you don't want to read, you can just scroll down to the pics
+
 (This project was originally started as a highway project, but I have not submitted it to highway; it is now only for SoM.)
-### Reviewer? look at these videos too: 
-https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Wave_Env_OnDevice.mp4
-https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Wave_Setup_OnDevice.mp4
+
+### Run waveOS in QEMU (Any Platform or architecture)
+
+Do you want to test waveOS on your own download the built OS and custom kernel and run this command
+
+```
+qemu-system-aarch64 -machine virt -cpu cortex-a72 -smp 6 -m 4G -kernel Image -append "root=/dev/vda2 rootfstype=ext4 rw panic=0 console=ttyAMA0 console=tty0" -drive format=raw,file=waveos.img,if=none,id=hd0,cache=writeback -device virtio-blk,drive=hd0,bootindex=0 -netdev user,id=mynet,hostfwd=tcp::2222-:22 -device virtio-net-pci,netdev=mynet -monitor telnet:127.0.0.1:5555,server,nowait -device virtio-gpu-pci -device virtio-keyboard-pci -device virtio-mouse-pci -device virtio-tablet-pci -display gtk -serial stdio
+```
+
 # Demo WavePad v1 (0.1a)
 
 Hello and welcome to WavePad
@@ -55,11 +62,7 @@ I can only put images and videos of all the user apps, try to just merge them in
 
 An OOBE that sets up your WavePad and teaches you how to use it
 
-
-
 https://github.com/user-attachments/assets/51294527-9858-40f4-9589-a049399a5ba1
-
-
 
 ![Setup-Wifi.png](https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Setup-Wifi.png)
 
@@ -77,11 +80,7 @@ The main Weather frontend app. Weather is split into two backends, and the front
 
 ![Weather-Details.png](https://github.com/Choccy-vr/WavePad/blob/main/Jounal%20Img/Weather-Details.png)
 
-
-
 https://github.com/user-attachments/assets/21fdbf74-21af-47ca-adb4-2b918eda360f
-
-
 
 ## Macro Pad
 
